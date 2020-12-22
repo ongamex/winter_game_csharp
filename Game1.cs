@@ -9,92 +9,18 @@ using System.IO;
 
 namespace MyGame
 {
-	public class AsepriteAnimDescJson
+	public class TempTile
 	{
-		public class Rect
-		{
-			public int x, y, w, h;
+		public Vector2 pos = new Vector2(0f, 0f);
+
+		public Rectf GetRectWs() {
+			Rectf res = new Rectf();
+			res.X = pos.X;
+			res.Y = pos.Y;
+			res.Width = 32f;
+			res.Height = 32f;
+			return res;
 		}
-
-		public class Frame
-		{
-			public Rect frame;
-			public int duration; // in miliseconds
-		}
-
-		public class Meta
-		{
-			public string image;
-		}
-
-		public List<Frame> frames;
-		public Meta meta;
-	}
-
-	public class SpriteAnimation
-	{
-		public class Frame
-		{
-			public Rectangle subImage = new Rectangle();
-			public float startTime = 0f;
-			public float endTime = 0f;
-			public float duration = 0f; // The duration of this frame in seconds.
-		}
-
-		public static SpriteAnimation Load(string jsonFile, ContentManager content) {
-			string animJsonDesc = File.ReadAllText(jsonFile);
-			AsepriteAnimDescJson animDesc = JsonConvert.DeserializeObject<AsepriteAnimDescJson>(animJsonDesc);
-
-			SpriteAnimation anim = new SpriteAnimation();
-
-			anim._texture = content.Load<Texture2D>(Path.GetFileNameWithoutExtension(animDesc.meta.image));
-
-			float frameStartTime = 0f;
-			foreach (AsepriteAnimDescJson.Frame descFrame in animDesc.frames) {
-				Frame frame = new Frame();
-				frame.startTime = frameStartTime;
-				frame.duration = (float)(descFrame.duration) / 1000f;
-				frame.endTime = frame.startTime + frame.duration;
-				frame.subImage.X = descFrame.frame.x;
-				frame.subImage.Y = descFrame.frame.y;
-				frame.subImage.Width = descFrame.frame.w;
-				frame.subImage.Height = descFrame.frame.h;
-				anim._frames.Add(frame);
-
-				frameStartTime += frame.duration;
-			}
-
-			anim._totalAnimationTime = frameStartTime;
-
-			return anim;
-		}
-
-		public Rectangle Evaluate(float evalTime, bool isLooping = true) {
-			if (_totalAnimationTime == 0f || _frames.Count == 0) {
-				return new Rectangle();
-			}
-
-			evalTime = Math.Max(0f, evalTime);
-			if (isLooping) {
-				int numLengthsToRemove = (int)(evalTime / _totalAnimationTime);
-				evalTime -= (float)(numLengthsToRemove) * _totalAnimationTime;
-				evalTime = Math.Max(0f, evalTime);
-			} else {
-				evalTime = Math.Clamp(evalTime, 0f, _totalAnimationTime);
-			}
-
-			foreach(Frame frame in _frames) {
-				if(evalTime >= frame.startTime && evalTime <= frame.endTime) {
-					return frame.subImage;
-				}
-			}
-
-			return new Rectangle();
-		}
-
-		public Texture2D _texture;
-		List<Frame> _frames = new List<Frame>();
-		float _totalAnimationTime = 0;
 	}
 
 	public class Game1 : Game
@@ -109,6 +35,8 @@ namespace MyGame
 		SpriteAnimation _snowmanAnimWalk;
 		float walkAnimEvalTime = 0f;
 
+		List<TempTile> _tiles;
+
 		Camera _camera = new Camera();
 
 		public static float lerpCLamp(float from, float to, float vel) {
@@ -121,6 +49,8 @@ namespace MyGame
 			_graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
+
+			Window.AllowUserResizing = true;
 		}
 
 		protected override void Initialize() {
@@ -136,10 +66,30 @@ namespace MyGame
 			_tileTexture = Content.Load<Texture2D>("tile");
 
 			_snowmanAnimWalk = SpriteAnimation.Load("snowman_walk.json", Content);
+
+			_tiles = new List<TempTile>();
+			for (int t = 0; t < 10; ++t) {
+				if (t % 2 != 0) continue;
+				TempTile tile = new TempTile();
+				tile.pos.X = (float)t * 32f;
+				tile.pos.Y = 64f;
+				_tiles.Add(tile);
+			}
+			_tiles.Add(new TempTile { pos = new Vector2(96f, 32f) });
 		}
 
 		protected override void Update(GameTime gameTime) {
 			float dt = (float)(gameTime.ElapsedGameTime.TotalSeconds);
+
+			float jumpHeight = 68f;
+			float jumpTimeApex = 0.6f;
+			float minJumpHeight = 24f;
+			float fallingGravityMultiplier = 1.3f;
+			float gravity = 2f * jumpHeight / (jumpTimeApex * jumpTimeApex);
+			float fallingGravity = gravity * fallingGravityMultiplier;
+			float maxJumpVelocity = gravity * jumpTimeApex;
+			float minJumpVelocity = MathF.Sqrt(2f * gravity * minJumpHeight);
+
 
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
@@ -163,26 +113,53 @@ namespace MyGame
 				_camera.viewHeigthWs += 50f * dt;
 
 
-			if (Keyboard.GetState().IsKeyDown(Keys.Left))
-				snowmanVel.X = lerpCLamp(snowmanVel.X, -50, 100 * dt);
-
+			if (Keyboard.GetState().IsKeyDown(Keys.Left)) {
+				snowmanVel.X = lerpCLamp(snowmanVel.X, -140f, 350 * dt);
+			}
 			if (Keyboard.GetState().IsKeyDown(Keys.Right))
-				snowmanVel.X = lerpCLamp(snowmanVel.X, 80f, 100 * dt);
+				snowmanVel.X = lerpCLamp(snowmanVel.X, 140f, 350 * dt);
 
 			if (Keyboard.GetState().IsKeyDown(Keys.Space) && !oldks.IsKeyDown(Keys.Space)) {
-				snowmanVel.Y = -80;
+				// pressed
+				snowmanVel.Y = -maxJumpVelocity;
+			}
+			if (!Keyboard.GetState().IsKeyDown(Keys.Space) && oldks.IsKeyDown(Keys.Space)) {
+				// released
+				if (snowmanVel.Y < -minJumpVelocity) {
+					snowmanVel.Y = -minJumpVelocity;
+				}
 			}
 
 			snowmanPos += snowmanVel * dt;
 
-			snowmanVel.Y += 100f * dt;
+			if (snowmanVel.Y < 0)
+				snowmanVel.Y += gravity * dt;
+			else
+				snowmanVel.Y += fallingGravity * dt;
 
-			snowmanVel.X -= snowmanVel.X * 0.005f;
 
-			if (snowmanPos.Y > 28f) {
-				snowmanPos.Y = 28f;
-				snowmanVel.Y = 0f;
+			snowmanVel.X -= snowmanVel.X * 0.05f;
+
+			foreach (TempTile tile in _tiles) {
+				Rectf snowmanRect = new Rectf(snowmanPos.X + 8, snowmanPos.Y, 16f, 32f);
+				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
+				if(depth.X != 0f && MathF.Abs(depth.X) < MathF.Abs(depth.Y)) {
+					snowmanPos.X += depth.X;
+					snowmanVel.X = 0;
+				}
+				if (depth.Y != 0f && MathF.Abs(depth.Y) < MathF.Abs(depth.X)) {
+					snowmanPos.Y += depth.Y;
+					if(snowmanVel.Y > 0f)
+						snowmanVel.Y = 0;
+				}
 			}
+
+
+
+			if (MathF.Abs(snowmanVel.X) > 1f)
+				walkAnimEvalTime += (float)(gameTime.ElapsedGameTime.TotalSeconds) * MathF.Sign(snowmanVel.X);
+			else
+				walkAnimEvalTime = 0f;
 
 			// TODO: Add your update logic here
 			oldks = Keyboard.GetState();
@@ -192,7 +169,7 @@ namespace MyGame
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 			Matrix proj = _camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-			walkAnimEvalTime += (float)(gameTime.ElapsedGameTime.TotalSeconds);
+
 			// Draw the snowman
 			{
 				Rectangle subImage = _snowmanAnimWalk.Evaluate(walkAnimEvalTime);
@@ -204,8 +181,14 @@ namespace MyGame
 			}
 
 			// Draw the bauchour
-			for (int t = 0; t < 10; ++t) {
-				Matrix n2w = Matrix.CreateTranslation((float)t * 32f, 60f, 0f);
+			//for (int t = 0; t < 10; ++t) {
+			//	Matrix n2w = Matrix.CreateTranslation((float)t * 32f, 60f, 0f);
+			//	_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+			//	_spriteBatch.Draw(_tileTexture, new Vector2(0, 0), Color.White);
+			//	_spriteBatch.End();
+			//}
+			foreach(TempTile tile in _tiles) {
+				Matrix n2w = Matrix.CreateTranslation((float)tile.pos.X, tile.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 				_spriteBatch.Draw(_tileTexture, new Vector2(0, 0), Color.White);
 				_spriteBatch.End();
