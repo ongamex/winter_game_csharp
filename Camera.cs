@@ -2,10 +2,10 @@
 using Microsoft.Xna.Framework.Graphics;
 namespace MyGame
 {
-	class Camera
+	public class Camera
 	{
 		public Vector2 pos = new Vector2(0, 0);
-		public float viewHeigthWs = 150f; // The camera image height in world space
+		public float viewHeigthWs = 300f; // The camera image height in world space
 
 		public Matrix GetProjectionMatrix(int iviewportWidth, int iviewportHeight) {
 			float viewportWidth = (float)iviewportWidth;
