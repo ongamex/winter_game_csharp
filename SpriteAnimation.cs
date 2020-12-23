@@ -98,6 +98,6 @@ namespace MyGame
 
 		public Texture2D _texture;
 		List<Frame> _frames { get; set; } = new List<Frame>();
-		float _totalAnimationTime { get; set; } = 0;
+		public float _totalAnimationTime { get; set; } = 0;
 	}
 }
