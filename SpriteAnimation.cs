@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 
-namespace MyGame
+namespace Game1
 {
 	public class AsepriteAnimDescJson
 	{

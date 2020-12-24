@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace MyGame
+namespace Game1
 {
 	public static class MyMath
 	{

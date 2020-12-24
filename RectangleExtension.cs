@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna;
 
-namespace MyGame
+namespace Game1
 {
 	using Microsoft.Xna.Framework;
 

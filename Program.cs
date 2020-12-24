@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 
-namespace MyGame
+namespace Game1
 {
 
 	public class Demo
