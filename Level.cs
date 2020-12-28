@@ -17,6 +17,7 @@ namespace Game1
 		public bool shouldRestart = false;
 		public string creationText;
 		public float deathYCoord = 0; // if the player y coord get bigger than this the player should die.
+		public float minYPointWs = 0;
 		public Camera _camera = new Camera();
 		public Snowman _snowman;
 		public List<Tile> _tiles = new List<Tile>();
@@ -25,6 +26,8 @@ namespace Game1
 		public List<Fire> _fires = new List<Fire>();
 		public List<FireProjectile> _fireProjectiles = new List<FireProjectile>();
 		public List<WalkAndBad> walkAndBads = new List<WalkAndBad>();
+		public List<Ghosty> ghosties = new List<Ghosty>();
+		public List<IceSpike> iceSpikes = new List<IceSpike>();
 
 		public void Update(Game1 game, float dt) {
 			GameUpdateSets u = new GameUpdateSets();
@@ -45,6 +48,14 @@ namespace Game1
 			}
 
 			foreach (Fire f in _fires) {
+				f.Update(u);
+			}
+
+			foreach (Ghosty f in ghosties) {
+				f.Update(u);
+			}
+
+			foreach (IceSpike f in iceSpikes) {
 				f.Update(u);
 			}
 
@@ -127,6 +138,19 @@ namespace Game1
 
 					level.walkAndBads.Add(w);
 				}
+				else if (ch == 'd' || ch == 'D') {
+					Vector2 p = new Vector2((float)xOffset * 32f, (float)yOffset * 32f);
+					Ghosty g = new Ghosty(p);
+
+					level.ghosties.Add(g);
+				}
+				else if (ch == 'i' || ch == 'I') {
+					IceSpike w = new IceSpike();
+					w.pos.X = (float)xOffset * 32f;
+					w.pos.Y = (float)yOffset * 32f;
+
+					level.iceSpikes.Add(w);
+				}
 
 				if (ch == '\n') {
 					xOffset = 0;
@@ -138,6 +162,7 @@ namespace Game1
 			}
 
 			level.deathYCoord = (float)(yOffset + 3) * 32f;
+			level.minYPointWs = (float)(yOffset) * 32f;
 
 			return level;
 		}

@@ -13,16 +13,21 @@ namespace Game1
 	{
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
+		private Texture2D whiteTex1;
+
 		private Texture2D _snowmanDeadTex;
 		private Texture2D _tileTexture;
+		private Texture2D _cityTex;
 		private Texture2D _jumpSwitchYellowSolid;
 		private Texture2D _jumpSwitchYellowPassable;
 		private Texture2D _jumpSwitchGreenSolid;
 		private Texture2D _jumpSwitchGreenPassable;
 		private Texture2D _fireProjectileTex;
+		private Texture2D _ghostyTex;
+		private Texture2D _iceSpikeTex;
 		private Level _level;
 		public KeyboardState oldks;
-		Camera _camera = new Camera();
+		public GamePadState oldgs;
 		public SpriteAnimation _snowmanAnimWalk;
 		public SpriteAnimation _timeSwitchBlueAnim;
 		public SpriteAnimation _timeSwitchRedAnim;
@@ -31,6 +36,9 @@ namespace Game1
 
 		public Game1() {
 			_graphics = new GraphicsDeviceManager(this);
+			_graphics.PreferredBackBufferWidth = 1200;
+			_graphics.PreferredBackBufferHeight = 720;
+			_graphics.ApplyChanges();
 			Content.RootDirectory = "Content";
 			IsMouseVisible = true;
 
@@ -47,18 +55,29 @@ namespace Game1
 		protected override void LoadContent() {
 			_spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			whiteTex1 = new Texture2D(GraphicsDevice, 1, 1);
+			{
+				Color[] data = new Color[1 * 1];
+				for (int i = 0; i < data.Length; ++i) data[i] = Color.White;
+				whiteTex1.SetData(data);
+			}
+
 			_snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
 			_tileTexture = Content.Load<Texture2D>("tile");
+			_cityTex = Content.Load<Texture2D>("city");
 			_jumpSwitchYellowSolid = Content.Load<Texture2D>("yellowJumpSwitchSolid");
 			_jumpSwitchYellowPassable = Content.Load<Texture2D>("yellowJumpSwitchPassable");
 			_jumpSwitchGreenSolid = Content.Load<Texture2D>("greenJumpSwitchSolid");
 			_jumpSwitchGreenPassable = Content.Load<Texture2D>("greenJumpSwitchPassable");
 			_fireProjectileTex = Content.Load<Texture2D>("fireProjectile");
+			_ghostyTex = Content.Load<Texture2D>("ghosty");
+			_iceSpikeTex = Content.Load<Texture2D>("iceSpike");
 			_snowmanAnimWalk = SpriteAnimation.Load("snowman_walk.json", Content);
 			_timeSwitchBlueAnim = SpriteAnimation.Load("timeSwitchBlueAnim.json", Content);
 			_timeSwitchRedAnim = SpriteAnimation.Load("timeSwitchRedAnim.json", Content);
 			_fireAnim = SpriteAnimation.Load("fire.json", Content);
 			_walkAndBad = SpriteAnimation.Load("walkAndBad.json", Content);
+
 		}
 
 		protected override void Update(GameTime gameTime) {
@@ -67,24 +86,6 @@ namespace Game1
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-			if (Keyboard.GetState().IsKeyDown(Keys.A))
-				_camera.pos.X -= 50f * dt;
-
-			if (Keyboard.GetState().IsKeyDown(Keys.D))
-				_camera.pos.X += 50f * dt;
-
-			if (Keyboard.GetState().IsKeyDown(Keys.W))
-				_camera.pos.Y -= 50f * dt;
-
-			if (Keyboard.GetState().IsKeyDown(Keys.S))
-				_camera.pos.Y += 50f * dt;
-
-			if (Keyboard.GetState().IsKeyDown(Keys.Q))
-				_camera.viewHeigthWs -= 50f * dt;
-
-			if (Keyboard.GetState().IsKeyDown(Keys.E))
-				_camera.viewHeigthWs += 50f * dt;
-
 			_level.Update(this, dt);
 			if (_level.shouldRestart) {
 				_level = Level.FromText(_level.creationText);
@@ -92,12 +93,42 @@ namespace Game1
 
 			// TODO: Add your update logic here
 			oldks = Keyboard.GetState();
+			oldgs = GamePad.GetState(0);
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime) {
-			GraphicsDevice.Clear(new Color(79f / 255f, 154f / 255f, 27f / 255f));
+			GraphicsDevice.Clear(new Color(117f / 255f, 114f / 255f, 71f / 255f));
 			Matrix proj = _level._camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+			{
+				float imageWidthWs = _cityTex.Width * 2f;
+
+				float parallaxShiftXWs = _level._camera.pos.X * 0.3f;
+				float parallaxShiftYWs = _level._camera.pos.Y * 0.05f;
+				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
+
+
+				
+				int k = (int)(_level._camera.viewRectWs.X / imageWidthWs) - 1;
+				int numRepeatsNeededToCovertTheScreen = (int)(_level._camera.viewRectWs.Width / imageWidthWs) + 3;
+
+				for (int t = 0; t < numRepeatsNeededToCovertTheScreen; ++t) {
+					Matrix n2w = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateTranslation((float)(t + k) * imageWidthWs + parallaxShiftXWs, _level.minYPointWs - _cityTex.Height * 2f + parallaxShiftYWs, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(_cityTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
+				{
+					Vector2 pos = new Vector2();
+					pos.X = _level._camera.viewRectWs.X;
+					pos.Y = _level.minYPointWs;
+					Matrix n2w = Matrix.CreateScale(_level._camera.viewRectWs.Width, 320f, 1f) * Matrix.CreateTranslation(pos.X, pos.Y + parallaxShiftYWs, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null,  n2w * proj);
+					_spriteBatch.Draw(whiteTex1, new Vector2(0, 0), new Color(45f / 255f, 27f / 255f, 30f / 255f));
+					_spriteBatch.End();
+				}
+			}
 
 			foreach (Fire f in _level._fires) {
 				Matrix n2w = Matrix.CreateTranslation((float)f.pos.X, f.pos.Y, 0f);
@@ -139,6 +170,25 @@ namespace Game1
 				_spriteBatch.End();
 			}
 
+			foreach (Ghosty g in _level.ghosties) {
+				Matrix n2w = Matrix.Identity;
+				if (g.isLookingRight) {
+					n2w = Matrix.CreateTranslation(-32f, 0f, 0f) * Matrix.CreateScale(-1f, 1f, 1f);
+				}
+				n2w = n2w * Matrix.CreateTranslation(g.pos.X, g.pos.Y, 0f);
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+				_spriteBatch.Draw(_ghostyTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.End();
+			}
+
+			foreach (IceSpike g in _level.iceSpikes) {
+
+				Matrix n2w = Matrix.CreateTranslation(g.pos.X, g.pos.Y, 0f);
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+				_spriteBatch.Draw(_iceSpikeTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.End();
+			}
+
 			foreach (WalkAndBad f in _level.walkAndBads) {
 				Matrix n2w = Matrix.CreateTranslation((float)f.pos.X, f.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
@@ -151,7 +201,7 @@ namespace Game1
 			{
 
 				Matrix n2w = Matrix.Identity;
-				if (_level._snowman._isFacingRight == false) {
+				if (_level._snowman._isFacingRight == false && !_level._snowman.isDead) {
 					n2w = Matrix.CreateTranslation(-32f, 0f, 0f) * Matrix.CreateScale(-1f, 1f, 1f);
 				}
 				n2w = n2w * Matrix.CreateTranslation(_level._snowman.pos.X, _level._snowman.pos.Y, 0f);
@@ -174,6 +224,13 @@ namespace Game1
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 				_spriteBatch.Draw(_fireProjectileTex, new Vector2(0, 0), Color.White);
 				_spriteBatch.End();
+			}
+
+			if (_level._snowman.isDead) {
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
+				//_spriteBatch.Draw(null, new Rectangle(0, 0, 500, 500), new Color(0f, 0f, 0f,1f - _level._snowman.timeSpentDead));
+				_spriteBatch.End();
+
 			}
 
 			base.Draw(gameTime);

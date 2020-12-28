@@ -13,10 +13,10 @@ namespace Game1
 
 		public Rectf GetRectWs() {
 			Rectf res = new Rectf();
-			res.X = pos.X + 16;
-			res.Y = pos.Y + 8;
-			res.Width = 8f;
-			res.Height = 24f;
+			res.X = pos.X + 8f;
+			res.Y = pos.Y + 16f;
+			res.Width = 16f;
+			res.Height = 16f;
 			return res;
 		}
 

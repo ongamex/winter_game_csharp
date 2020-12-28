@@ -63,14 +63,14 @@ namespace Game1
 		public void Update(GameUpdateSets u) {
 			float animLength = u.game._timeSwitchBlueAnim._totalAnimationTime;
 
-			if (timeInCurrentState >= 3f) {
+			if (timeInCurrentState >= 2f) {
 				_isSolid = !_isSolid;
 				timeInCurrentState = 0f;
 			}
 			timeInCurrentState += u.dt;
 
 
-			if (timeInCurrentState > 2.5f) {
+			if (timeInCurrentState > 1.5f) {
 				int k = (int)((timeInCurrentState - 2.5f) / 0.1f);
 				if (k % 2 == 0) {
 					tint = new Microsoft.Xna.Framework.Color(0.5f, 0.5f, 0.5f);
