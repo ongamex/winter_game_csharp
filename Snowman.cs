@@ -14,16 +14,26 @@ namespace Game1
 		public float walkAnimEvalTime = 0f;
 		public bool wasGrounded = false;
 		public bool isDead = false;
+		public bool wasDead = false;
 		public float timeSpentDead = 0f;
 		private int jumpCounter = 0;
+		public bool isCrouched = false;
 
 		public Rectf GetRectWs() {
 			Rectf res = new Rectf();
-			res.X = pos.X + 8f;
-			res.Y = pos.Y + 4f;
-			res.Width = 16f;
-			res.Height = 28f;
-			return res;
+			if (isCrouched) {
+				res.X = pos.X + 8f;
+				res.Y = pos.Y + 16f;
+				res.Width = 16f;
+				res.Height = 16f;
+				return res;
+			} else {
+				res.X = pos.X + 8f;
+				res.Y = pos.Y + 4f;
+				res.Width = 16f;
+				res.Height = 28f;
+				return res;
+			}
 		}
 
 		public void Update(GameUpdateSets u) {
@@ -47,18 +57,20 @@ namespace Game1
 				return;
 			}
 
-			if (Keyboard.GetState().IsKeyDown(Keys.Left) || GamePad.GetState(0).IsButtonDown(Buttons.DPadLeft)) {
+			isCrouched = Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(0).IsButtonDown(Buttons.DPadDown) || (GamePad.GetState(0).ThumbSticks.Left.Y < -0.1f);
+
+			if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Left) || GamePad.GetState(0).IsButtonDown(Buttons.DPadLeft)) {
 				vel.X = MyMath.lerpCLamp(vel.X, -140f, 350 * u.dt);
 				walkAnimEvalTime += (float)(u.dt);
 				_isFacingRight = false;
 			}
-			if (Keyboard.GetState().IsKeyDown(Keys.Right) || GamePad.GetState(0).IsButtonDown(Buttons.DPadRight)) {
+			if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Right) || GamePad.GetState(0).IsButtonDown(Buttons.DPadRight)) {
 				vel.X = MyMath.lerpCLamp(vel.X, 140f, 350 * u.dt);
 				walkAnimEvalTime += (float)(u.dt);
 				_isFacingRight = true;
 			}
 
-			if (MathF.Abs(GamePad.GetState(0).ThumbSticks.Left.X) > 0.01f) {
+			if (!isCrouched && MathF.Abs(GamePad.GetState(0).ThumbSticks.Left.X) > 0.01f) {
 				float k = GamePad.GetState(0).ThumbSticks.Left.X;
 				vel.X = MyMath.lerpCLamp(vel.X, 140f * k, 350 * u.dt);
 				walkAnimEvalTime += (float)(u.dt);
@@ -72,9 +84,10 @@ namespace Game1
 				// pressed
 				vel.Y = -maxJumpVelocity;
 				jumpCounter++;
-				foreach (JumpSwitch tile in u.level._jumpSwitch) {
+				foreach (JumpSwitch tile in u.level.jumpSwitches) {
 					tile._isSolid = !tile._isSolid;
 				}
+				u.game.jumpSfx.Play();
 			}
 
 			if (isJumpBtnReleased) {
@@ -92,12 +105,12 @@ namespace Game1
 				vel.Y += fallingGravity * u.dt;
 
 
-			vel.X -= vel.X * 0.05f;
+			vel.X -= vel.X * (isCrouched ? 0.1f : 0.05f);
 
 			bool isGrounded = false;
-			Rectf snowmanRectGroundCheck = new Rectf(pos.X + 8, pos.Y + 4f, 16f, 30f);
+			Rectf snowmanRectGroundCheck = new Rectf(pos.X + 8, pos.Y + 16f, 16f, 18f);
 
-			foreach (Tile tile in u.level._tiles) {
+			foreach (Tile tile in u.level.tiles) {
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
 				isGrounded |= snowmanRectGroundCheck.GetIntersectionDepth(tile.GetRectWs()).Y < 0f;
@@ -112,7 +125,7 @@ namespace Game1
 				}
 			}
 
-			foreach (JumpSwitch tile in u.level._jumpSwitch) {
+			foreach (JumpSwitch tile in u.level.jumpSwitches) {
 
 				if (tile._isSolid == false) continue;
 
@@ -130,7 +143,7 @@ namespace Game1
 				}
 			}
 
-			foreach (TimeSwitch tile in u.level._timeSwitches) {
+			foreach (TimeSwitch tile in u.level.timeSwitches) {
 				if (tile._isSolid == false) continue;
 
 				Rectf snowmanRect = GetRectWs();
@@ -147,7 +160,7 @@ namespace Game1
 				}
 			}
 
-			foreach (var f in u.level.walkAndBads) {
+			foreach (var f in u.level.walkers) {
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
 				if (depth != Vector2.Zero) {
@@ -156,7 +169,7 @@ namespace Game1
 				}
 			}
 
-			foreach (var f in u.level._fires) {
+			foreach (var f in u.level.fires) {
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
 				if (depth != Vector2.Zero) {
@@ -165,7 +178,7 @@ namespace Game1
 				}
 			}
 
-			foreach (FireProjectile fp in u.level._fireProjectiles) {
+			foreach (FireProjectile fp in u.level.fireProjectiles) {
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(fp.GetRectWs());
 				if (depth != Vector2.Zero) {
@@ -192,6 +205,17 @@ namespace Game1
 				}
 			}
 
+			foreach (Letter letter in u.level.letters) {
+				Rectf snowmanRect = GetRectWs();
+				if (letter.isCollected == false) {
+					Vector2 depth = snowmanRect.GetIntersectionDepth(letter.GetRectWs());
+					if (depth != Vector2.Zero) {
+						letter.isCollected = true;
+						u.game.pickupSfx.Play();
+					}
+				}
+			}
+
 			if (pos.Y >= u.level.deathYCoord) {
 				isDead = true;
 				//u.level.shouldRestart = true;
@@ -206,14 +230,14 @@ namespace Game1
 				timeSpentInAir += u.dt;
 			}
 
-			Camera cam = u.level._camera;
+			Camera cam = u.level.camera;
 
-			if (cam.pos.X - pos.X < -50f) {
-				cam.pos.X = pos.X - 50f;
+			if (cam.pos.X - pos.X < -16f) {
+				cam.pos.X = pos.X - 16f;
 			}
 
-			if (cam.pos.X - pos.X > 150f) {
-				cam.pos.X = pos.X + 150f;
+			if (cam.pos.X - pos.X > 100f) {
+				cam.pos.X = pos.X + 100f;
 			}
 
 			if (cam.pos.Y - (pos.Y + 50f) < -50f) {
@@ -224,6 +248,11 @@ namespace Game1
 				cam.pos.Y = pos.Y + 100f;
 			}
 
+			if(isDead && !wasDead) {
+				u.game.hitSfx.Play();
+			}
+
+			wasDead = isDead;
 			//cam.pos.Y = pos.Y;
 		}
 	}

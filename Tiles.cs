@@ -61,7 +61,7 @@ namespace Game1
 		}
 
 		public void Update(GameUpdateSets u) {
-			float animLength = u.game._timeSwitchBlueAnim._totalAnimationTime;
+			float animLength = u.game.timeswitchBlueAnim._totalAnimationTime;
 
 			if (timeInCurrentState >= 2f) {
 				_isSolid = !_isSolid;

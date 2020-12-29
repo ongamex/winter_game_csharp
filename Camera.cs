@@ -5,7 +5,7 @@ namespace Game1
 	public class Camera
 	{
 		public Vector2 pos = new Vector2(0, 0);
-		public float viewHeigthWs = 300f; // The camera image height in world space
+		public float viewHeigthWs = 240f; // The camera image height in world space
 		public float camScaleX = 1f;
 		public float camScaleY = 1f;
 

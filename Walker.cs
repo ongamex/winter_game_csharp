@@ -5,7 +5,7 @@ using System;
 
 namespace Game1
 {
-	public class WalkAndBad
+	public class Walker
 	{
 		public Vector2 pos = new Vector2(0f, 0f);
 		public bool isWalkingRight = true;
@@ -29,7 +29,7 @@ namespace Game1
 			groundSearchRect.Height = 32f;
 
 			bool hasGroundTowardsNextPos = false;
-			foreach (Tile tile in u.level._tiles) {
+			foreach (Tile tile in u.level.tiles) {
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
 				hasGroundTowardsNextPos |= groundSearchRect.GetIntersectionDepth(tile.GetRectWs()) != Vector2.Zero;

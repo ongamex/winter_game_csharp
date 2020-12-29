@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace Game1
 {
@@ -15,25 +17,36 @@ namespace Game1
 		private SpriteBatch _spriteBatch;
 
 		private Texture2D whiteTex1;
-		private Texture2D _snowmanDeadTex;
-		private Texture2D _tileTexture;
-		private Texture2D _cityTex;
+		private Texture2D snowmanDeadTex;
+		private Texture2D snowmandCrouchTex;
+		private Texture2D tileTex;
+		private Texture2D cityTex;
+		private Texture2D mountTex;
 		private Texture2D snowflake0;
-		private Texture2D _jumpSwitchYellowSolid;
-		private Texture2D _jumpSwitchYellowPassable;
+		private Texture2D jumpswitchYellowSolid;
+		private Texture2D jumpswitchYellowPassable;
 		private Texture2D _jumpSwitchGreenSolid;
 		private Texture2D _jumpSwitchGreenPassable;
 		private Texture2D _fireProjectileTex;
-		private Texture2D _ghostyTex;
-		private Texture2D _iceSpikeTex;
+		private Texture2D ghostyTex;
+		private Texture2D iceSpikeTex;
+		private Texture2D letterBoxTex;
+		private Texture2D letterBoxPromptTex;
+		private Texture2D letterBoxPromptReadyTex;
+		private Texture2D letterTex;
 
-		public SpriteAnimation _snowmanAnimWalk;
-		public SpriteAnimation _timeSwitchBlueAnim;
-		public SpriteAnimation _timeSwitchRedAnim;
-		public SpriteAnimation _fireAnim;
-		public SpriteAnimation _walkAndBad;
+		public SpriteAnimation snowmanWalkAnim;
+		public SpriteAnimation timeswitchBlueAnim;
+		public SpriteAnimation timeswitchRedAnim;
+		public SpriteAnimation fileAnim;
+		public SpriteAnimation walkerAnim;
 
-		private Level _level;
+		private Song song;
+		public SoundEffect jumpSfx;
+		public SoundEffect hitSfx;
+		public SoundEffect pickupSfx;
+
+		private Level level;
 		public KeyboardState oldks;
 		public GamePadState oldgs;
 		public Snow snow = new Snow(640f, 640f, 10);
@@ -53,7 +66,7 @@ namespace Game1
 			// TODO: Add your initialization logic here
 
 			base.Initialize();
-			_level = Level.FromFile("level_1.txt");
+			level = Level.FromFile("level_1.txt");
 		}
 
 		protected override void LoadContent() {
@@ -66,22 +79,37 @@ namespace Game1
 				whiteTex1.SetData(data);
 			}
 
-			_snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
-			_tileTexture = Content.Load<Texture2D>("tile");
-			_cityTex = Content.Load<Texture2D>("city");
+			song = Content.Load<Song>("snd/Slow Stride Loop");
+			MediaPlayer.IsRepeating = true;
+			MediaPlayer.Play(song);
+			jumpSfx = Content.Load<SoundEffect>("snd/jump");
+			hitSfx = Content.Load<SoundEffect>("snd/hit");
+			pickupSfx = Content.Load<SoundEffect>("snd/pickup");
+
+			//song.Play(volume: 0.7f, pitch: 0.0f, pan: 0.0f);
+
+			snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
+			snowmandCrouchTex = Content.Load<Texture2D>("snowman_crouch");
+			tileTex = Content.Load<Texture2D>("tile");
+			cityTex = Content.Load<Texture2D>("city");
+			mountTex = Content.Load<Texture2D>("mount");
 			snowflake0 = Content.Load<Texture2D>("snowflake0");
-			_jumpSwitchYellowSolid = Content.Load<Texture2D>("yellowJumpSwitchSolid");
-			_jumpSwitchYellowPassable = Content.Load<Texture2D>("yellowJumpSwitchPassable");
+			jumpswitchYellowSolid = Content.Load<Texture2D>("yellowJumpSwitchSolid");
+			jumpswitchYellowPassable = Content.Load<Texture2D>("yellowJumpSwitchPassable");
 			_jumpSwitchGreenSolid = Content.Load<Texture2D>("greenJumpSwitchSolid");
 			_jumpSwitchGreenPassable = Content.Load<Texture2D>("greenJumpSwitchPassable");
 			_fireProjectileTex = Content.Load<Texture2D>("fireProjectile");
-			_ghostyTex = Content.Load<Texture2D>("ghosty");
-			_iceSpikeTex = Content.Load<Texture2D>("iceSpike");
-			_snowmanAnimWalk = SpriteAnimation.Load("snowman_walk.json", Content);
-			_timeSwitchBlueAnim = SpriteAnimation.Load("timeSwitchBlueAnim.json", Content);
-			_timeSwitchRedAnim = SpriteAnimation.Load("timeSwitchRedAnim.json", Content);
-			_fireAnim = SpriteAnimation.Load("fire.json", Content);
-			_walkAndBad = SpriteAnimation.Load("walkAndBad.json", Content);
+			ghostyTex = Content.Load<Texture2D>("ghosty");
+			iceSpikeTex = Content.Load<Texture2D>("iceSpike");
+			letterBoxTex = Content.Load<Texture2D>("letterBox");
+			letterBoxPromptTex = Content.Load<Texture2D>("letterBoxPrompt");
+			letterBoxPromptReadyTex = Content.Load<Texture2D>("letterBoxPromptReady");
+			letterTex = Content.Load<Texture2D>("letter");
+			snowmanWalkAnim = SpriteAnimation.Load("snowman_walk.json", Content);
+			timeswitchBlueAnim = SpriteAnimation.Load("timeSwitchBlueAnim.json", Content);
+			timeswitchRedAnim = SpriteAnimation.Load("timeSwitchRedAnim.json", Content);
+			fileAnim = SpriteAnimation.Load("fire.json", Content);
+			walkerAnim = SpriteAnimation.Load("walkAndBad.json", Content);
 
 		}
 
@@ -92,9 +120,9 @@ namespace Game1
 				Exit();
 
 			snow.update(dt);
-			_level.Update(this, dt);
-			if (_level.shouldRestart) {
-				_level = Level.FromText(_level.creationText);
+			level.Update(this, dt);
+			if (level.shouldRestart) {
+				level = Level.FromText(level.creationText);
 			}
 
 			// TODO: Add your update logic here
@@ -104,129 +132,190 @@ namespace Game1
 		}
 
 		protected override void Draw(GameTime gameTime) {
-			GraphicsDevice.Clear(new Color(117f / 255f, 114f / 255f, 71f / 255f));
-			Matrix proj = _level._camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+			GraphicsDevice.Clear(new Color(38f / 255f, 43f / 255f, 68f / 255f));
+			Matrix proj = level.camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-			// City
+			float totalSeconds = (float)gameTime.TotalGameTime.TotalSeconds;
+
 			{
-				float imageWidthWs = _cityTex.Width * 2f;
+				float imageWidthWs = mountTex.Width * 2f;
 
-				float parallaxShiftXWs = _level._camera.pos.X * 0.3f;
-				float parallaxShiftYWs = _level._camera.pos.Y * 0.05f - 32f;
+				float parallaxShiftXWs = level.camera.pos.X * 0.6f;
+				float parallaxShiftYWs = level.camera.pos.Y * 0.05f - 32f + 4f;
 				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
 
 
-				
-				int k = (int)(_level._camera.viewRectWs.X / imageWidthWs) - 1;
-				int numRepeatsNeededToCovertTheScreen = (int)(_level._camera.viewRectWs.Width / imageWidthWs) + 3;
+
+				int k = (int)(level.camera.viewRectWs.X / imageWidthWs) - 2;
+				int numRepeatsNeededToCovertTheScreen = (int)(level.camera.viewRectWs.Width / imageWidthWs) + 4;
 
 				for (int t = 0; t < numRepeatsNeededToCovertTheScreen; ++t) {
-					Matrix n2w = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateTranslation((float)(t + k) * imageWidthWs + parallaxShiftXWs, _level.minYPointWs - _cityTex.Height * 2f + parallaxShiftYWs, 0f);
+					Matrix n2w = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateTranslation((float)(t + k) * imageWidthWs + parallaxShiftXWs, level.minYPointWs - mountTex.Height * 2f + parallaxShiftYWs, 0f);
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-					_spriteBatch.Draw(_cityTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.Draw(mountTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
+			}
+
+			// City
+			{
+				float imageWidthWs = cityTex.Width * 2f;
+
+				float parallaxShiftXWs = level.camera.pos.X * 0.3f;
+				float parallaxShiftYWs = level.camera.pos.Y * 0.05f - 32f + 4f;
+				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
+
+
+
+				int k = (int)(level.camera.viewRectWs.X / imageWidthWs) - 2;
+				int numRepeatsNeededToCovertTheScreen = (int)(level.camera.viewRectWs.Width / imageWidthWs) + 4;
+
+				for (int t = 0; t < numRepeatsNeededToCovertTheScreen; ++t) {
+					Matrix n2w = Matrix.CreateScale(2f, 2f, 1f) * Matrix.CreateTranslation((float)(t + k) * imageWidthWs + parallaxShiftXWs, level.minYPointWs - cityTex.Height * 2f + parallaxShiftYWs, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(cityTex, new Vector2(0, 0), Color.White);
 					_spriteBatch.End();
 				}
 				{
 					Vector2 pos = new Vector2();
-					pos.X = _level._camera.viewRectWs.X;
-					pos.Y = _level.minYPointWs;
-					Matrix n2w = Matrix.CreateScale(_level._camera.viewRectWs.Width, 320f, 1f) * Matrix.CreateTranslation(pos.X, pos.Y + parallaxShiftYWs, 0f);
-					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null,  n2w * proj);
-					_spriteBatch.Draw(whiteTex1, new Vector2(0, 0), new Color(45f / 255f, 27f / 255f, 30f / 255f));
+					pos.X = level.camera.viewRectWs.X;
+					pos.Y = level.minYPointWs;
+					Matrix n2w = Matrix.CreateScale(level.camera.viewRectWs.Width, 320f, 1f) * Matrix.CreateTranslation(pos.X, pos.Y + parallaxShiftYWs, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(whiteTex1, new Vector2(0, 0), new Color(20f / 255f, 23f / 255f, 32f / 255f));
 					_spriteBatch.End();
 				}
 			}
 
-			foreach (Fire f in _level._fires) {
+
+
+			foreach (Fire f in level.fires) {
 				Matrix n2w = Matrix.CreateTranslation((float)f.pos.X, f.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-				Rectangle frame = _fireAnim.Evaluate(f.animTime);
-				_spriteBatch.Draw(_fireAnim._texture, new Vector2(0, 0), frame, Color.White);
+				Rectangle frame = fileAnim.Evaluate(f.animTime);
+				_spriteBatch.Draw(fileAnim._texture, new Vector2(0, 0), frame, Color.White);
 				_spriteBatch.End();
 			}
 
-			foreach (Tile tile in _level._tiles) {
+			foreach (Tile tile in level.tiles) {
 				Matrix n2w = Matrix.CreateTranslation((float)tile.pos.X, tile.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-				_spriteBatch.Draw(_tileTexture, new Vector2(0, 0), Color.White);
+				_spriteBatch.Draw(tileTex, new Vector2(0, 0), Color.White);
 				_spriteBatch.End();
 			}
 
-			foreach (JumpSwitch tile in _level._jumpSwitch) {
+			foreach (JumpSwitch tile in level.jumpSwitches) {
 				Matrix n2w = Matrix.CreateTranslation((float)tile.pos.X, tile.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 				if (tile._isSolid)
-					_spriteBatch.Draw(tile._color == JumpSwitch.Color.Yellow ? _jumpSwitchYellowSolid : _jumpSwitchGreenSolid, new Vector2(0, 0), Color.White);
+					_spriteBatch.Draw(tile._color == JumpSwitch.Color.Yellow ? jumpswitchYellowSolid : _jumpSwitchGreenSolid, new Vector2(0, 0), Color.White);
 				else
-					_spriteBatch.Draw(tile._color == JumpSwitch.Color.Yellow ? _jumpSwitchYellowPassable : _jumpSwitchGreenPassable, new Vector2(0, 0), Color.White);
+					_spriteBatch.Draw(tile._color == JumpSwitch.Color.Yellow ? jumpswitchYellowPassable : _jumpSwitchGreenPassable, new Vector2(0, 0), Color.White);
 
 				_spriteBatch.End();
 			}
 
-			foreach (TimeSwitch tile in _level._timeSwitches) {
+			foreach (TimeSwitch tile in level.timeSwitches) {
 				Matrix n2w = Matrix.CreateTranslation((float)tile.pos.X, tile.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 				if (tile._color == TimeSwitch.Color.Blue) {
-					Rectangle frame = _timeSwitchBlueAnim.Evaluate(tile.animEvalTime, false);
-					_spriteBatch.Draw(_timeSwitchBlueAnim._texture, new Vector2(0, 0), frame, tile.tint);
+					Rectangle frame = timeswitchBlueAnim.Evaluate(tile.animEvalTime, false);
+					_spriteBatch.Draw(timeswitchBlueAnim._texture, new Vector2(0, 0), frame, tile.tint);
 				}
 				else {
-					Rectangle frame = _timeSwitchRedAnim.Evaluate(tile.animEvalTime, false);
-					_spriteBatch.Draw(_timeSwitchRedAnim._texture, new Vector2(0, 0), frame, tile.tint);
+					Rectangle frame = timeswitchRedAnim.Evaluate(tile.animEvalTime, false);
+					_spriteBatch.Draw(timeswitchRedAnim._texture, new Vector2(0, 0), frame, tile.tint);
 				}
 				_spriteBatch.End();
 			}
 
-			foreach (Ghosty g in _level.ghosties) {
+			foreach (Letter f in level.letters) {
+				SpriteEffects se = new SpriteEffects();
+				float scale = Math.Clamp(1f - f.timeSpentCollected, 0f, 1f);
+				Matrix n2w = Matrix.CreateTranslation(-16f, -16f, 0f) * Matrix.CreateScale(scale, scale, 1f) * Matrix.CreateTranslation(16f, 16f, 0f) * Matrix.CreateTranslation((float)f.pos.X, f.pos.Y + MathF.Sin((float)gameTime.TotalGameTime.TotalSeconds * 1.5f) * 4f, 0f);
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+
+				_spriteBatch.Draw(letterTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.End();
+			}
+
+			foreach (Ghosty g in level.ghosties) {
 				Matrix n2w = Matrix.Identity;
 				if (g.isLookingRight) {
 					n2w = Matrix.CreateTranslation(-32f, 0f, 0f) * Matrix.CreateScale(-1f, 1f, 1f);
 				}
 				n2w = n2w * Matrix.CreateTranslation(g.pos.X, g.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-				_spriteBatch.Draw(_ghostyTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.Draw(ghostyTex, new Vector2(0, 0), Color.White);
 				_spriteBatch.End();
 			}
 
-			foreach (IceSpike g in _level.iceSpikes) {
+			foreach (IceSpike g in level.iceSpikes) {
 
 				Matrix n2w = Matrix.CreateTranslation(g.pos.X, g.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-				_spriteBatch.Draw(_iceSpikeTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.Draw(iceSpikeTex, new Vector2(0, 0), Color.White);
 				_spriteBatch.End();
 			}
 
-			foreach (WalkAndBad f in _level.walkAndBads) {
+			foreach (Walker f in level.walkers) {
 				Matrix n2w = Matrix.CreateTranslation((float)f.pos.X, f.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-				Rectangle frame = _walkAndBad.Evaluate(f.animEvalTime);
-				_spriteBatch.Draw(_walkAndBad._texture, new Vector2(0, 0), frame, Color.White);
+				Rectangle frame = walkerAnim.Evaluate(f.animEvalTime);
+				_spriteBatch.Draw(walkerAnim._texture, new Vector2(0, 0), frame, Color.White);
 				_spriteBatch.End();
+			}
+
+
+			if (level.letterBox != null) {
+				{
+					Matrix n2w = Matrix.CreateTranslation(level.letterBox.pos.X, level.letterBox.pos.Y, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(letterBoxTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
+
+				bool areAllLeteterCollected = true;
+				foreach (Letter l in level.letters) {
+					areAllLeteterCollected &= l.isCollected;
+				}
+
+				if (2f * totalSeconds % 3 > 1f) {
+					Matrix n2w = Matrix.CreateTranslation(level.letterBox.pos.X + 24, level.letterBox.pos.Y - 24, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(areAllLeteterCollected ? letterBoxPromptReadyTex: letterBoxPromptTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
 			}
 
 			// Draw the snowman
 			{
 
 				Matrix n2w = Matrix.Identity;
-				if (_level._snowman._isFacingRight == false && !_level._snowman.isDead) {
+				if (level.snowman._isFacingRight == false && !level.snowman.isDead) {
 					n2w = Matrix.CreateTranslation(-32f, 0f, 0f) * Matrix.CreateScale(-1f, 1f, 1f);
 				}
-				n2w = n2w * Matrix.CreateTranslation(_level._snowman.pos.X, _level._snowman.pos.Y, 0f);
-				if (_level._snowman.isDead) {
+				n2w = n2w * Matrix.CreateTranslation(level.snowman.pos.X, level.snowman.pos.Y, 0f);
+				if (level.snowman.isDead) {
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-					_spriteBatch.Draw(_snowmanDeadTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.Draw(snowmanDeadTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
+				else if (level.snowman.isCrouched) {
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(snowmandCrouchTex, new Vector2(0, 0), Color.White);
 					_spriteBatch.End();
 				}
 				else {
-					Rectangle subImage = _snowmanAnimWalk.Evaluate(_level._snowman.walkAnimEvalTime);
+					Rectangle subImage = snowmanWalkAnim.Evaluate(level.snowman.walkAnimEvalTime);
 
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-					_spriteBatch.Draw(_snowmanAnimWalk._texture, new Vector2(0, 0), subImage, Color.White);
+					_spriteBatch.Draw(snowmanWalkAnim._texture, new Vector2(0, 0), subImage, Color.White);
 					_spriteBatch.End();
 				}
 			}
 
-			foreach (var f in _level._fireProjectiles) {
+			foreach (var f in level.fireProjectiles) {
 				Matrix n2w = Matrix.CreateTranslation(-8f, -8f, 0f) * Matrix.CreateRotationZ(5f * f.age) * Matrix.CreateTranslation(8f, 8f, 0f) * Matrix.CreateTranslation((float)f.pos.X, f.pos.Y, 0f);
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 				_spriteBatch.Draw(_fireProjectileTex, new Vector2(0, 0), Color.White);
@@ -237,15 +326,13 @@ namespace Game1
 
 			// Snow
 			{
-				float parallaxShiftXWs = _level._camera.pos.X * 0.01f;
 				float parallaxShiftYWs = 0f;
-				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / snow.simWidth) * snow.simWidth;
 
-				int k = (int)(_level._camera.viewRectWs.X / snow.simWidth) - 1;
-				int numRepeatsNeededToCovertTheScreen = (int)(_level._camera.viewRectWs.Width / snow.simWidth) + 3;
+				int k = (int)(level.camera.viewRectWs.X / snow.simWidth) - 1;
+				int numRepeatsNeededToCovertTheScreen = (int)(level.camera.viewRectWs.Width / snow.simWidth) + 3;
 
 				for (int t = 0; t < numRepeatsNeededToCovertTheScreen; ++t) {
-					Matrix n2w = Matrix.CreateTranslation((float)(t + k) * snow.simWidth + parallaxShiftXWs, _level.minYPointWs - snow.simHeight * 0.5f, 0f);
+					Matrix n2w = Matrix.CreateTranslation((float)(t + k) * snow.simWidth, level.minYPointWs - snow.simHeight * 0.5f, 0f);
 
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 					foreach (Snow.Flake f in snow.flakes) {
@@ -257,16 +344,30 @@ namespace Game1
 				}
 			}
 
-			if (_level.timeSpentPlaying < 0.5f) {
+			// Collected Mail
+			{
+				for (int t = 0; t < level.letters.Count; ++t) {
+
+					Color color = level.letters[t].isCollected ? Color.White : new Color(0.5f, 0.5f, 0.5f, 1f);
+
+					Matrix n2w = Matrix.CreateTranslation(level.camera.viewRectWs.X + 8f + t * 18f, level.camera.viewRectWs.Y, 0f);
+					_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(letterTex, new Vector2(0, 0), color);
+					_spriteBatch.End();
+				}
+
+			}
+
+			if (level.timeSpentPlaying < 0.5f) {
 				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
-				_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, 1f - MathF.Pow(_level.timeSpentPlaying / 0.5f, 2f)));
+				_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, 1f - MathF.Pow(level.timeSpentPlaying / 0.5f, 2f)));
 				_spriteBatch.End();
 			}
 
-			if (_level._snowman.isDead) {
-				if (_level._snowman.timeSpentDead > 0.3f) {
+			if (level.snowman.isDead) {
+				if (level.snowman.timeSpentDead > 0.3f) {
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
-					_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, (_level._snowman.timeSpentDead - 0.3f) / 0.7f));
+					_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, (level.snowman.timeSpentDead - 0.3f) / 0.7f));
 					_spriteBatch.End();
 				}
 			}

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Game1
 {
@@ -19,16 +20,18 @@ namespace Game1
 		public string creationText;
 		public float deathYCoord = 0; // if the player y coord get bigger than this the player should die.
 		public float minYPointWs = 0;
-		public Camera _camera = new Camera();
-		public Snowman _snowman;
-		public List<Tile> _tiles = new List<Tile>();
-		public List<JumpSwitch> _jumpSwitch = new List<JumpSwitch>();
-		public List<TimeSwitch> _timeSwitches = new List<TimeSwitch>();
-		public List<Fire> _fires = new List<Fire>();
-		public List<FireProjectile> _fireProjectiles = new List<FireProjectile>();
-		public List<WalkAndBad> walkAndBads = new List<WalkAndBad>();
+		public Camera camera = new Camera();
+		public Snowman snowman;
+		public LetterBox letterBox;
+		public List<Tile> tiles = new List<Tile>();
+		public List<JumpSwitch> jumpSwitches = new List<JumpSwitch>();
+		public List<TimeSwitch> timeSwitches = new List<TimeSwitch>();
+		public List<Fire> fires = new List<Fire>();
+		public List<FireProjectile> fireProjectiles = new List<FireProjectile>();
+		public List<Walker> walkers = new List<Walker>();
 		public List<Ghosty> ghosties = new List<Ghosty>();
 		public List<IceSpike> iceSpikes = new List<IceSpike>();
+		public List<Letter> letters = new List<Letter>();
 
 		public void Update(Game1 game, float dt) {
 			GameUpdateSets u = new GameUpdateSets();
@@ -38,19 +41,19 @@ namespace Game1
 
 			timeSpentPlaying += dt;
 
-			if (_snowman != null) {
-				_snowman.Update(u);
+			if (snowman != null) {
+				snowman.Update(u);
 			}
 
-			foreach (var a in walkAndBads) {
+			foreach (var a in walkers) {
 				a.Update(u);
 			}
 
-			foreach (TimeSwitch tile in _timeSwitches) {
+			foreach (TimeSwitch tile in timeSwitches) {
 				tile.Update(u);
 			}
 
-			foreach (Fire f in _fires) {
+			foreach (Fire f in fires) {
 				f.Update(u);
 			}
 
@@ -62,9 +65,13 @@ namespace Game1
 				f.Update(u);
 			}
 
-			for (int t = 0; t < _fireProjectiles.Count; ++t) {
-				if (_fireProjectiles[t].Update(u)) {
-					_fireProjectiles.RemoveAt(t);
+			foreach (Letter f in letters) {
+				f.Update(u);
+			}
+
+			for (int t = 0; t < fireProjectiles.Count; ++t) {
+				if (fireProjectiles[t].Update(u)) {
+					fireProjectiles.RemoveAt(t);
 					t--;
 				}
 			}
@@ -84,64 +91,64 @@ namespace Game1
 			int yOffset = 0;
 			foreach (char ch in text) {
 
-				if (ch == 'p' && level._snowman == null) {
+				if ((ch == 'p' || ch == 'P') && level.snowman == null) {
 					Snowman snowman = new Snowman();
 
 					snowman.pos.X = (float)xOffset * 32f;
 					snowman.pos.Y = (float)yOffset * 32f;
 
-					level._snowman = snowman;
+					level.snowman = snowman;
 				}
 				else if (ch == 'f' || ch == 'F') {
 					Fire f = new Fire();
 					f.pos.X = (float)xOffset * 32f;
 					f.pos.Y = (float)yOffset * 32f;
 
-					level._fires.Add(f);
+					level.fires.Add(f);
 				}
 				else if (ch == 'x' || ch == 'X') {
 					Tile tile = new Tile();
 					tile.pos.X = (float)xOffset * 32f;
 					tile.pos.Y = (float)yOffset * 32f;
 
-					level._tiles.Add(tile);
+					level.tiles.Add(tile);
 				}
-				else if (ch == 'y' || ch == 'Y') {
+				else if (ch == 'J') {
 					JumpSwitch tile = new JumpSwitch(JumpSwitch.Color.Yellow);
 					tile.pos.X = (float)xOffset * 32f;
 					tile.pos.Y = (float)yOffset * 32f;
 
-					level._jumpSwitch.Add(tile);
+					level.jumpSwitches.Add(tile);
 				}
-				else if (ch == 'g' || ch == 'G') {
+				else if (ch == 'j') {
 					JumpSwitch tile = new JumpSwitch(JumpSwitch.Color.Green);
 					tile.pos.X = (float)xOffset * 32f;
 					tile.pos.Y = (float)yOffset * 32f;
 
-					level._jumpSwitch.Add(tile);
+					level.jumpSwitches.Add(tile);
 				}
-				else if (ch == 'b' || ch == 'B') {
+				else if (ch == 'T') {
 					TimeSwitch tile = new TimeSwitch(TimeSwitch.Color.Blue);
 					tile.pos.X = (float)xOffset * 32f;
 					tile.pos.Y = (float)yOffset * 32f;
 
-					level._timeSwitches.Add(tile);
+					level.timeSwitches.Add(tile);
 				}
-				else if (ch == 'r' || ch == 'R') {
+				else if (ch == 't') {
 					TimeSwitch tile = new TimeSwitch(TimeSwitch.Color.Red);
 					tile.pos.X = (float)xOffset * 32f;
 					tile.pos.Y = (float)yOffset * 32f;
 
-					level._timeSwitches.Add(tile);
+					level.timeSwitches.Add(tile);
 				}
 				else if (ch == 'w' || ch == 'W') {
-					WalkAndBad w = new WalkAndBad();
+					Walker w = new Walker();
 					w.pos.X = (float)xOffset * 32f;
 					w.pos.Y = (float)yOffset * 32f;
 
-					level.walkAndBads.Add(w);
+					level.walkers.Add(w);
 				}
-				else if (ch == 'd' || ch == 'D') {
+				else if (ch == 'g' || ch == 'G') {
 					Vector2 p = new Vector2((float)xOffset * 32f, (float)yOffset * 32f);
 					Ghosty g = new Ghosty(p);
 
@@ -154,6 +161,20 @@ namespace Game1
 
 					level.iceSpikes.Add(w);
 				}
+				else if (ch == 'L') {
+					LetterBox w = new LetterBox();
+					w.pos.X = (float)xOffset * 32f;
+					w.pos.Y = (float)yOffset * 32f;
+
+					level.letterBox = w;
+				}
+				else if (ch == 'l') {
+					Letter w = new Letter();
+					w.pos.X = (float)xOffset * 32f;
+					w.pos.Y = (float)yOffset * 32f;
+
+					level.letters.Add(w);
+				}
 
 				if (ch == '\n') {
 					xOffset = 0;
@@ -163,6 +184,8 @@ namespace Game1
 					xOffset++;
 				}
 			}
+
+			level.letters = level.letters.OrderBy(a => a.pos.X).ThenBy(a => a.pos.Y).ToList();
 
 			level.deathYCoord = (float)(yOffset + 3) * 32f;
 			level.minYPointWs = (float)(yOffset) * 32f;

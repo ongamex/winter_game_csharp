@@ -24,17 +24,17 @@ namespace Game1
 			animTime += u.dt;
 			timeSinceLastProjectalieSpawn += u.dt;
 
-			if (timeSinceLastProjectalieSpawn >= 2.5f && (pos - u.level._snowman.pos).Length() < 320f) {
+			if (timeSinceLastProjectalieSpawn >= 2.5f && (pos - u.level.snowman.pos).Length() < 320f) {
 				timeSinceLastProjectalieSpawn = 0;
 				FireProjectile p = new FireProjectile();
-				Vector2 dir = u.level._snowman.pos - pos;
+				Vector2 dir = u.level.snowman.pos - pos;
 				if (dir.Length() > 1e-3f) {
 					dir.Normalize();
 				}
 				p.pos = pos + new Vector2(8f, 8f);
 				p.vel = dir * 64f;
 
-				u.level._fireProjectiles.Add(p);
+				u.level.fireProjectiles.Add(p);
 			}
 		}
 	}
@@ -49,8 +49,8 @@ namespace Game1
 			Rectf res = new Rectf();
 			res.X = pos.X + 2f;
 			res.Y = pos.Y + 2f;
-			res.Width = 4f;
-			res.Height = 4f;
+			res.Width = 8f;
+			res.Height = 8f;
 			return res;
 		}
 

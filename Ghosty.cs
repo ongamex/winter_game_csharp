@@ -35,7 +35,7 @@ namespace Game1
 		public void Update(GameUpdateSets u) {
 
 			Vector2 targetPos = new Vector2(0f, 0f);
-			Vector2 toSnowman = u.level._snowman.pos - pos;
+			Vector2 toSnowman = u.level.snowman.pos - pos;
 
 			if (state == State.WaitingForPlayer) {
 				targetPos = waitingPos;
@@ -47,7 +47,7 @@ namespace Game1
 				if ((pos - waitingPos).Length() > 160f) {
 					state = State.WaitingForPlayer;
 				}
-				targetPos = u.level._snowman.pos + new Vector2(0f,12f);
+				targetPos = u.level.snowman.pos + new Vector2(0f,12f);
 			}
 
 
