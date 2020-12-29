@@ -29,7 +29,7 @@ namespace Game1
 		public void Update(GameUpdateSets u) {
 			float jumpHeight = 36f;
 			float jumpTimeApex = 0.3f;
-			float minJumpHeight = 4f;
+			float minJumpHeight = 8f;
 			float fallingGravityMultiplier = 1f;
 			float gravity = 2f * jumpHeight / (jumpTimeApex * jumpTimeApex);
 			float fallingGravity = gravity * fallingGravityMultiplier;
@@ -196,9 +196,6 @@ namespace Game1
 				isDead = true;
 				//u.level.shouldRestart = true;
 			}
-
-
-
 
 			wasGrounded = isGrounded;
 			if (isGrounded) {

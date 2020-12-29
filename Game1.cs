@@ -13,11 +13,12 @@ namespace Game1
 	{
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
-		private Texture2D whiteTex1;
 
+		private Texture2D whiteTex1;
 		private Texture2D _snowmanDeadTex;
 		private Texture2D _tileTexture;
 		private Texture2D _cityTex;
+		private Texture2D snowflake0;
 		private Texture2D _jumpSwitchYellowSolid;
 		private Texture2D _jumpSwitchYellowPassable;
 		private Texture2D _jumpSwitchGreenSolid;
@@ -25,14 +26,17 @@ namespace Game1
 		private Texture2D _fireProjectileTex;
 		private Texture2D _ghostyTex;
 		private Texture2D _iceSpikeTex;
-		private Level _level;
-		public KeyboardState oldks;
-		public GamePadState oldgs;
+
 		public SpriteAnimation _snowmanAnimWalk;
 		public SpriteAnimation _timeSwitchBlueAnim;
 		public SpriteAnimation _timeSwitchRedAnim;
 		public SpriteAnimation _fireAnim;
 		public SpriteAnimation _walkAndBad;
+
+		private Level _level;
+		public KeyboardState oldks;
+		public GamePadState oldgs;
+		public Snow snow = new Snow(640f, 640f, 10);
 
 		public Game1() {
 			_graphics = new GraphicsDeviceManager(this);
@@ -65,6 +69,7 @@ namespace Game1
 			_snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
 			_tileTexture = Content.Load<Texture2D>("tile");
 			_cityTex = Content.Load<Texture2D>("city");
+			snowflake0 = Content.Load<Texture2D>("snowflake0");
 			_jumpSwitchYellowSolid = Content.Load<Texture2D>("yellowJumpSwitchSolid");
 			_jumpSwitchYellowPassable = Content.Load<Texture2D>("yellowJumpSwitchPassable");
 			_jumpSwitchGreenSolid = Content.Load<Texture2D>("greenJumpSwitchSolid");
@@ -86,6 +91,7 @@ namespace Game1
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
+			snow.update(dt);
 			_level.Update(this, dt);
 			if (_level.shouldRestart) {
 				_level = Level.FromText(_level.creationText);
@@ -101,11 +107,12 @@ namespace Game1
 			GraphicsDevice.Clear(new Color(117f / 255f, 114f / 255f, 71f / 255f));
 			Matrix proj = _level._camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
+			// City
 			{
 				float imageWidthWs = _cityTex.Width * 2f;
 
 				float parallaxShiftXWs = _level._camera.pos.X * 0.3f;
-				float parallaxShiftYWs = _level._camera.pos.Y * 0.05f;
+				float parallaxShiftYWs = _level._camera.pos.Y * 0.05f - 32f;
 				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
 
 
@@ -226,11 +233,42 @@ namespace Game1
 				_spriteBatch.End();
 			}
 
-			if (_level._snowman.isDead) {
-				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
-				//_spriteBatch.Draw(null, new Rectangle(0, 0, 500, 500), new Color(0f, 0f, 0f,1f - _level._snowman.timeSpentDead));
-				_spriteBatch.End();
 
+
+			// Snow
+			{
+				float parallaxShiftXWs = _level._camera.pos.X * 0.01f;
+				float parallaxShiftYWs = 0f;
+				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / snow.simWidth) * snow.simWidth;
+
+				int k = (int)(_level._camera.viewRectWs.X / snow.simWidth) - 1;
+				int numRepeatsNeededToCovertTheScreen = (int)(_level._camera.viewRectWs.Width / snow.simWidth) + 3;
+
+				for (int t = 0; t < numRepeatsNeededToCovertTheScreen; ++t) {
+					Matrix n2w = Matrix.CreateTranslation((float)(t + k) * snow.simWidth + parallaxShiftXWs, _level.minYPointWs - snow.simHeight * 0.5f, 0f);
+
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					foreach (Snow.Flake f in snow.flakes) {
+
+						SpriteEffects se = new SpriteEffects();
+						_spriteBatch.Draw(snowflake0, f.pos, null, Color.White, 0f, new Vector2(), new Vector2(0.75f, 0.75f), se, 0f);
+					}
+					_spriteBatch.End();
+				}
+			}
+
+			if (_level.timeSpentPlaying < 0.5f) {
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
+				_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, 1f - MathF.Pow(_level.timeSpentPlaying / 0.5f, 2f)));
+				_spriteBatch.End();
+			}
+
+			if (_level._snowman.isDead) {
+				if (_level._snowman.timeSpentDead > 0.3f) {
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
+					_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, (_level._snowman.timeSpentDead - 0.3f) / 0.7f));
+					_spriteBatch.End();
+				}
 			}
 
 			base.Draw(gameTime);

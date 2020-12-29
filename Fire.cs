@@ -58,7 +58,7 @@ namespace Game1
 			age += u.dt;
 			pos += u.dt * vel;
 
-			return age > 10f;
+			return age > 5f;
 		}
 	}
 

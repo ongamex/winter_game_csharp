@@ -14,6 +14,7 @@ namespace Game1
 
 	public class Level
 	{
+		public float timeSpentPlaying = 0f;
 		public bool shouldRestart = false;
 		public string creationText;
 		public float deathYCoord = 0; // if the player y coord get bigger than this the player should die.
@@ -34,6 +35,8 @@ namespace Game1
 			u.dt = dt;
 			u.level = this;
 			u.game = game;
+
+			timeSpentPlaying += dt;
 
 			if (_snowman != null) {
 				_snowman.Update(u);
