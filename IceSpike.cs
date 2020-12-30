@@ -22,7 +22,11 @@ namespace Game1
 
 		public void Update(GameUpdateSets u) {
 
-			if(MathF.Abs(u.level.snowman.pos.X - pos.X) <= 32f) {
+			if (u.level.snowman.isDead) {
+				return;
+			}
+
+			if (MathF.Abs(u.level.snowman.pos.X - pos.X) <= 32f) {
 				isFalling = true;
 			}
 

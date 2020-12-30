@@ -319,3 +319,24 @@
 /processorParam:TextureFormat=Color
 /build:letterboxPromptReady.png
 
+#begin levels/level_0.txt
+/copy:levels/level_0.txt
+
+#begin levels/level_1.txt
+/copy:levels/level_1.txt
+
+#begin fire.json
+/copy:fire.json
+
+#begin snowman_walk.json
+/copy:snowman_walk.json
+
+#begin timeSwitchBlueAnim.json
+/copy:timeSwitchBlueAnim.json
+
+#begin timeSwitchRedAnim.json
+/copy:timeSwitchRedAnim.json
+
+#begin walkAndBad.json
+/copy:walkAndBad.json
+

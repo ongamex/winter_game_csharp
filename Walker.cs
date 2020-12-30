@@ -22,6 +22,12 @@ namespace Game1
 
 		public void Update(GameUpdateSets u) {
 
+			animEvalTime += u.dt;
+
+			if (u.level.snowman.isDead) {
+				return;
+			}
+
 			Rectf groundSearchRect = new Rectf();
 			groundSearchRect.X = MathF.Floor(pos.X / 32f) * 32f + (isWalkingRight ? 32f : 0f );
 			groundSearchRect.Y = (float)(1 + (int)(pos.Y / 32f)) * 32f;
@@ -39,7 +45,7 @@ namespace Game1
 				}
 			}
 
-			animEvalTime += u.dt;
+			
 			pos.X += (isWalkingRight ? 1f : -1f) * 32f * u.dt;
 
 			if(hasGroundTowardsNextPos == false) {

@@ -25,7 +25,7 @@ namespace Game1
 
 		public Rectf GetRectWs() {
 			Rectf res = new Rectf();
-			res.X = pos.X + 8;
+			res.X = pos.X + 10f;
 			res.Y = pos.Y + 8f;
 			res.Width = 8f;
 			res.Height = 8f;
@@ -33,6 +33,10 @@ namespace Game1
 		}
 
 		public void Update(GameUpdateSets u) {
+
+			if(u.level.snowman.isDead) {
+				return;
+			}
 
 			Vector2 targetPos = new Vector2(0f, 0f);
 			Vector2 toSnowman = u.level.snowman.pos - pos;

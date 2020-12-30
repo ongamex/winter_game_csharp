@@ -55,7 +55,12 @@ namespace Game1
 		}
 
 		public bool Update(GameUpdateSets u) {
+
 			age += u.dt;
+			if (u.level.snowman.isDead) {
+				return false;
+			}
+
 			pos += u.dt * vel;
 
 			return age > 5f;

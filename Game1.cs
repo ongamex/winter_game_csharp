@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,6 +45,10 @@ namespace Game1
 		public SoundEffect hitSfx;
 		public SoundEffect pickupSfx;
 
+
+		int currentLevel = 0;
+		List<string> allLevelFilenames = new List<string>();
+
 		private Level level;
 		public KeyboardState oldks;
 		public GamePadState oldgs;
@@ -65,8 +68,17 @@ namespace Game1
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
 
+			for(int t = 0; true; ++t) {
+				string filename = String.Format("Content/levels/level_{0}.txt", t);
+				if(File.Exists(filename)) {
+					allLevelFilenames.Add(filename);
+				} else {
+					break;
+				}
+			}
+
 			base.Initialize();
-			level = Level.FromFile("level_1.txt");
+			level = Level.FromFile(allLevelFilenames[0]);
 		}
 
 		protected override void LoadContent() {
@@ -105,11 +117,11 @@ namespace Game1
 			letterBoxPromptTex = Content.Load<Texture2D>("letterBoxPrompt");
 			letterBoxPromptReadyTex = Content.Load<Texture2D>("letterBoxPromptReady");
 			letterTex = Content.Load<Texture2D>("letter");
-			snowmanWalkAnim = SpriteAnimation.Load("snowman_walk.json", Content);
-			timeswitchBlueAnim = SpriteAnimation.Load("timeSwitchBlueAnim.json", Content);
-			timeswitchRedAnim = SpriteAnimation.Load("timeSwitchRedAnim.json", Content);
-			fileAnim = SpriteAnimation.Load("fire.json", Content);
-			walkerAnim = SpriteAnimation.Load("walkAndBad.json", Content);
+			snowmanWalkAnim = SpriteAnimation.Load("Content/snowman_walk.json", Content);
+			timeswitchBlueAnim = SpriteAnimation.Load("Content/timeSwitchBlueAnim.json", Content);
+			timeswitchRedAnim = SpriteAnimation.Load("Content/timeSwitchRedAnim.json", Content);
+			fileAnim = SpriteAnimation.Load("Content/fire.json", Content);
+			walkerAnim = SpriteAnimation.Load("Content/walkAndBad.json", Content);
 
 		}
 
@@ -120,11 +132,26 @@ namespace Game1
 				Exit();
 
 			snow.update(dt);
-			level.Update(this, dt);
-			if (level.shouldRestart) {
-				level = Level.FromText(level.creationText);
-			}
 
+			if (level == null) {
+
+				if(currentLevel >= allLevelFilenames.Count) {
+					currentLevel = 0;
+				}
+
+				level = Level.FromFile(allLevelFilenames[currentLevel]);
+			}
+			if (level != null) {
+				level.Update(this, dt);
+				if (level.shouldRestart) {
+					level = Level.FromText(level.creationText);
+				}
+
+				if(level.isComplete) {
+					level = null;
+					currentLevel++;
+				}
+			}
 			// TODO: Add your update logic here
 			oldks = Keyboard.GetState();
 			oldgs = GamePad.GetState(0);
@@ -132,6 +159,12 @@ namespace Game1
 		}
 
 		protected override void Draw(GameTime gameTime) {
+
+			if (level == null) {
+				base.Draw(gameTime);
+				return;
+			}
+
 			GraphicsDevice.Clear(new Color(38f / 255f, 43f / 255f, 68f / 255f));
 			Matrix proj = level.camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 

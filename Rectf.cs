@@ -7,10 +7,14 @@ namespace Game1
 {
 	public static class MyMath
 	{
-		public static float lerpCLamp(float from, float to, float vel) {
+		public static float lerpClamp(float from, float to, float vel) {
 			if (from > to) from = Math.Max(from - vel, to);
 			if (from < to) from = Math.Min(from + vel, to);
 			return from;
+		}
+
+		public static float lerp(float t, float a, float b) {
+			return (1f - t) * a + b * t;
 		}
 	}
 

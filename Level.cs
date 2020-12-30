@@ -15,6 +15,7 @@ namespace Game1
 
 	public class Level
 	{
+		public bool isComplete = false;
 		public float timeSpentPlaying = 0f;
 		public bool shouldRestart = false;
 		public string creationText;

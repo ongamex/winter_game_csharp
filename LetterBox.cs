@@ -42,8 +42,8 @@ namespace Game1
 					diff.Normalize();
 				}
 				float t = MathF.Pow(timeSpentCollected * 2f, 2f) * u.dt * 64f;
-				pos.X = MyMath.lerpCLamp(pos.X, u.level.snowman.pos.X, t * MathF.Abs(diff.X));
-				pos.Y = MyMath.lerpCLamp(pos.Y, u.level.snowman.pos.Y, t * MathF.Abs(diff.Y));
+				pos.X = MyMath.lerpClamp(pos.X, u.level.snowman.pos.X, t * MathF.Abs(diff.X));
+				pos.Y = MyMath.lerpClamp(pos.Y, u.level.snowman.pos.Y, t * MathF.Abs(diff.Y));
 			}
 		}
 	}
