@@ -379,3 +379,21 @@
 /processorParam:TextureFormat=Color
 /build:gameComplete.png
 
+#begin levels/level_3.txt
+/copy:levels/level_3.txt
+
+#begin levels/level_4.txt
+/copy:levels/level_4.txt
+
+#begin levels/level_5.txt
+/copy:levels/level_5.txt
+
+#begin levels/level_6.txt
+/copy:levels/level_6.txt
+
+#begin levels/level_7.txt
+/copy:levels/level_7.txt
+
+#begin levels/level_8.txt
+/copy:levels/level_8.txt
+

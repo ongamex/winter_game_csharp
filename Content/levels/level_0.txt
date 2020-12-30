@@ -1,6 +1,4 @@
-x
-x
-x     xxxx       
-x        xxxx
-x p  l         L
-xxxxxxxxxxxxxxxxx
+                                                  f                       x 
+       x   l       xl    x         l     x        x  l      l        L    x
+ p  l xx           xx   xxx  l     w   x   x xx            xx      xxxx l x
+xxxxxxxxxxxxx  xxxxxxxxxxxxxxxxx xxxxx          xxxx xx xx xx xx      xxxxx

@@ -100,7 +100,6 @@ namespace Game1
 			}
 
 			base.Initialize();
-			level = Level.FromFile(allLevelFilenames[0]);
 		}
 
 		protected override void LoadContent() {
@@ -153,7 +152,6 @@ namespace Game1
 		protected override void Update(GameTime gameTime) {
 			float dt = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-
 			if (gamestate == GameState.WelcomeScreen) {
 				if (Keyboard.GetState().GetPressedKeyCount() != 0 || GamePad.GetState(0).IsButtonDown(Buttons.A)) {
 					gamestate = GameState.Playing;
@@ -176,13 +174,15 @@ namespace Game1
 						currentLevel = 0;
 						gamestate = GameState.EndScreen;
 					}
+
+					this.Window.Title = String.Format("Snowtime Delivery - Level {0}", currentLevel + 1);
 					level = Level.FromFile(allLevelFilenames[currentLevel]);
 				}
 
 				if (level != null && gamestate == GameState.Playing) {
 					level.Update(this, dt);
 					if (level.shouldRestart) {
-						level = Level.FromText(level.creationText);
+						level = Level.FromFile(allLevelFilenames[currentLevel]);
 					}
 
 					if (level.isComplete && level.timeSpentComplete > 2f) {

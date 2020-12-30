@@ -1,8 +1,7 @@
-                   
-   x      x.... ...x..                                             l       l
-...x......x....x.l.I.........................................f....Xx.T.x.x.....................
-...x......x....I.......... .......  ... .....................x..J.. ............XX....t. T....x
-...x.p.l  j...........x.l g.x....X.WlW .x.....wl.....f..j..x...xx...Y...........Ff.l..y...T..L.x
-...xxxxxxxxX..xxxxxx..xxxxxxxxx.xx.xxxxxx....xxxxxx.xxxxxxxxxxxxxxxX. xYx.tR.lxXXXXXxxxxxxxxxxxx.
-.....................................f.......................................X...................
-                                     x
+
+    
+    
+       l l l       w
+x  p             xxxxxx    l     l     l    l   L xx
+xxxxxx x x x xxxxxxxxxxx t T  t  T  t  T  xxxx xxxxx 
+xxxxxx x x x xxxxxxxxxxx                  xxxx xxxxx 

@@ -79,7 +79,7 @@ namespace Game1
 						if (vel.Y > 0f && depth.Y < 0f)
 							vel.Y = 0;
 
-						if (vel.Y < 0f && depth.Y > 0f)
+						if (vel.Y < 0f && depth.Y > 0f && depth.X == 0)
 							vel.Y = 0;
 					}
 				}
@@ -116,6 +116,11 @@ namespace Game1
 			}
 
 			// Input, don't take it if the level is complete.
+#if DEBUG
+			if((Keyboard.GetState().IsKeyDown(Keys.F5) && !u.game.oldks.IsKeyDown(Keys.F5))) {
+				u.level.isComplete = true;
+			}
+#endif
 			if (u.level.isComplete == false) {
 				isCrouched = Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(0).IsButtonDown(Buttons.DPadDown) || (GamePad.GetState(0).ThumbSticks.Left.Y < -0.1f);
 
@@ -204,6 +209,7 @@ namespace Game1
 			}
 
 			// Mailbox level ending.
+			if(u.level.letterBox != null)
 			{
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(u.level.letterBox.GetRectWs());
