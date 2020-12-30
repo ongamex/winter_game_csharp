@@ -18,6 +18,7 @@ namespace Game1
 		private Texture2D whiteTex1;
 		private Texture2D snowmanDeadTex;
 		private Texture2D snowmandCrouchTex;
+		private Texture2D snowmandWinTex;
 		private Texture2D tileTex;
 		private Texture2D cityTex;
 		private Texture2D mountTex;
@@ -44,6 +45,7 @@ namespace Game1
 		public SoundEffect jumpSfx;
 		public SoundEffect hitSfx;
 		public SoundEffect pickupSfx;
+		public SoundEffect levelWinSfx;
 
 
 		int currentLevel = 0;
@@ -68,11 +70,12 @@ namespace Game1
 		protected override void Initialize() {
 			// TODO: Add your initialization logic here
 
-			for(int t = 0; true; ++t) {
+			for (int t = 0; true; ++t) {
 				string filename = String.Format("Content/levels/level_{0}.txt", t);
-				if(File.Exists(filename)) {
+				if (File.Exists(filename)) {
 					allLevelFilenames.Add(filename);
-				} else {
+				}
+				else {
 					break;
 				}
 			}
@@ -97,11 +100,13 @@ namespace Game1
 			jumpSfx = Content.Load<SoundEffect>("snd/jump");
 			hitSfx = Content.Load<SoundEffect>("snd/hit");
 			pickupSfx = Content.Load<SoundEffect>("snd/pickup");
+			levelWinSfx = Content.Load<SoundEffect>("snd/levelWin");
 
 			//song.Play(volume: 0.7f, pitch: 0.0f, pan: 0.0f);
 
 			snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
 			snowmandCrouchTex = Content.Load<Texture2D>("snowman_crouch");
+			snowmandWinTex = Content.Load<Texture2D>("snowman_win");
 			tileTex = Content.Load<Texture2D>("tile");
 			cityTex = Content.Load<Texture2D>("city");
 			mountTex = Content.Load<Texture2D>("mount");
@@ -135,7 +140,7 @@ namespace Game1
 
 			if (level == null) {
 
-				if(currentLevel >= allLevelFilenames.Count) {
+				if (currentLevel >= allLevelFilenames.Count) {
 					currentLevel = 0;
 				}
 
@@ -147,7 +152,7 @@ namespace Game1
 					level = Level.FromText(level.creationText);
 				}
 
-				if(level.isComplete) {
+				if (level.isComplete && level.timeSpentComplete > 2f) {
 					level = null;
 					currentLevel++;
 				}
@@ -195,7 +200,7 @@ namespace Game1
 				float imageWidthWs = cityTex.Width * 2f;
 
 				float parallaxShiftXWs = level.camera.pos.X * 0.3f;
-				float parallaxShiftYWs = level.camera.pos.Y * 0.05f - 32f + 4f;
+				float parallaxShiftYWs = level.camera.pos.Y * 0.05f - 8f;
 				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
 
 
@@ -215,7 +220,7 @@ namespace Game1
 					pos.Y = level.minYPointWs;
 					Matrix n2w = Matrix.CreateScale(level.camera.viewRectWs.Width, 320f, 1f) * Matrix.CreateTranslation(pos.X, pos.Y + parallaxShiftYWs, 0f);
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-					_spriteBatch.Draw(whiteTex1, new Vector2(0, 0), new Color(20f / 255f, 23f / 255f, 32f / 255f));
+					_spriteBatch.Draw(whiteTex1, new Vector2(0, 0), new Color(32f / 255f, 26f / 255f, 20f / 255f));
 					_spriteBatch.End();
 				}
 			}
@@ -316,7 +321,7 @@ namespace Game1
 				if (2f * totalSeconds % 3 > 1f) {
 					Matrix n2w = Matrix.CreateTranslation(level.letterBox.pos.X + 24, level.letterBox.pos.Y - 24, 0f);
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
-					_spriteBatch.Draw(areAllLeteterCollected ? letterBoxPromptReadyTex: letterBoxPromptTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.Draw(areAllLeteterCollected ? letterBoxPromptReadyTex : letterBoxPromptTex, new Vector2(0, 0), Color.White);
 					_spriteBatch.End();
 				}
 			}
@@ -325,11 +330,17 @@ namespace Game1
 			{
 
 				Matrix n2w = Matrix.Identity;
-				if (level.snowman._isFacingRight == false && !level.snowman.isDead) {
+				if (level.snowman._isFacingRight == false && !level.snowman.isDead && !level.isComplete) {
 					n2w = Matrix.CreateTranslation(-32f, 0f, 0f) * Matrix.CreateScale(-1f, 1f, 1f);
 				}
 				n2w = n2w * Matrix.CreateTranslation(level.snowman.pos.X, level.snowman.pos.Y, 0f);
-				if (level.snowman.isDead) {
+
+				if (level.isComplete) {
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+					_spriteBatch.Draw(snowmandWinTex, new Vector2(0, 0), Color.White);
+					_spriteBatch.End();
+				}
+				else if (level.snowman.isDead) {
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
 					_spriteBatch.Draw(snowmanDeadTex, new Vector2(0, 0), Color.White);
 					_spriteBatch.End();
@@ -401,6 +412,14 @@ namespace Game1
 				if (level.snowman.timeSpentDead > 0.3f) {
 					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
 					_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, (level.snowman.timeSpentDead - 0.3f) / 0.7f));
+					_spriteBatch.End();
+				}
+			}
+
+			if (level.isComplete) {
+				if (level.timeSpentComplete > 0.3f) {
+					_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null);
+					_spriteBatch.Draw(whiteTex1, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color(0f, 0f, 0f, (level.timeSpentComplete - 0.3f) / 2f));
 					_spriteBatch.End();
 				}
 			}

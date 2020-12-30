@@ -235,12 +235,6 @@
 /processorParam:Quality=Best
 /build:snd/jump.wav
 
-#begin snd/Juhani Junkala [Retro Game Music Pack] Level 1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:snd/Juhani Junkala [Retro Game Music Pack] Level 1.wav
-
 #begin snd/hit.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -339,4 +333,25 @@
 
 #begin walkAndBad.json
 /copy:walkAndBad.json
+
+#begin snd/levelWin.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:snd/levelWin.wav
+
+#begin snowman_win.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:snowman_win.png
+
+#begin levels/level_2.txt
+/copy:levels/level_2.txt
 

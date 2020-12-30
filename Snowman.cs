@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 
 namespace Game1
 {
@@ -27,7 +28,8 @@ namespace Game1
 				res.Width = 16f;
 				res.Height = 16f;
 				return res;
-			} else {
+			}
+			else {
 				res.X = pos.X + 8f;
 				res.Y = pos.Y + 4f;
 				res.Width = 16f;
@@ -36,11 +38,60 @@ namespace Game1
 			}
 		}
 
+		public void CollisionTestEnemies<T>(List<T> enemies, Level level) {
+			Rectf snowmanRect = GetRectWs();
+			var argsGetRect = new object[] { };
+			foreach (var f in enemies) {
+				object rectObj = f.GetType().GetMethod("GetRectWs").Invoke(f, argsGetRect);
+
+				Rectf r = (Rectf)rectObj;
+				Vector2 depth = snowmanRect.GetIntersectionDepth(r);
+				if (depth != Vector2.Zero && level.isComplete == false) {
+					isDead = true;
+				}
+			}
+		}
+
+		public void CollisionTiles<T>(List<T> tiles, ref bool isGrounded) {
+
+			var argsGetRect = new object[] { };
+			foreach (T tile in tiles) {
+				Rectf snowmanRect = GetRectWs();
+				var isSolidInfo = tile.GetType().GetField("_isSolid");
+				bool isSolid = true;
+
+				if (isSolidInfo != null) {
+					isSolid = (bool)isSolidInfo.GetValue(tile);
+				}
+
+				if (isSolid == true) {
+					object rectObj = tile.GetType().GetMethod("GetRectWs").Invoke(tile, argsGetRect);
+					Rectf r = (Rectf)rectObj;
+
+					Vector2 depth = snowmanRect.GetIntersectionDepth(r);
+					if (depth.X != 0f && MathF.Abs(depth.X) < MathF.Abs(depth.Y)) {
+						pos.X += depth.X;
+						//vel.X = 0;
+					}
+					if (depth.Y != 0f && MathF.Abs(depth.Y) < MathF.Abs(depth.X)) {
+						pos.Y += depth.Y;
+						isGrounded = depth.Y < 0f;
+						if (vel.Y > 0f && depth.Y < 0f)
+							vel.Y = 0;
+
+						if (vel.Y < 0f && depth.Y > 0f)
+							vel.Y = 0;
+					}
+				}
+			}
+		}
+
 		public void Update(GameUpdateSets u) {
 
-			if(u.level.timeSpentPlaying <= 0.75f) {
-				u.level.camera.viewHeigthWs = MyMath.lerp(u.level.timeSpentPlaying / 0.75f, 160f, 240f); 
-			} else {
+			if (u.level.timeSpentPlaying <= 0.75f) {
+				u.level.camera.viewHeigthWs = MyMath.lerp(u.level.timeSpentPlaying / 0.75f, 160f, 240f);
+			}
+			else {
 				u.level.camera.viewHeigthWs = 240;
 			}
 
@@ -64,46 +115,50 @@ namespace Game1
 				return;
 			}
 
-			isCrouched = Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(0).IsButtonDown(Buttons.DPadDown) || (GamePad.GetState(0).ThumbSticks.Left.Y < -0.1f);
+			// Input, don't take it if the level is complete.
+			if (u.level.isComplete == false) {
+				isCrouched = Keyboard.GetState().IsKeyDown(Keys.Down) || GamePad.GetState(0).IsButtonDown(Buttons.DPadDown) || (GamePad.GetState(0).ThumbSticks.Left.Y < -0.1f);
 
-			if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Left) || GamePad.GetState(0).IsButtonDown(Buttons.DPadLeft)) {
-				vel.X = MyMath.lerpClamp(vel.X, -140f, 350 * u.dt);
-				walkAnimEvalTime += (float)(u.dt);
-				_isFacingRight = false;
-			}
-			if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Right) || GamePad.GetState(0).IsButtonDown(Buttons.DPadRight)) {
-				vel.X = MyMath.lerpClamp(vel.X, 140f, 350 * u.dt);
-				walkAnimEvalTime += (float)(u.dt);
-				_isFacingRight = true;
-			}
-
-			if (!isCrouched && MathF.Abs(GamePad.GetState(0).ThumbSticks.Left.X) > 0.01f) {
-				float k = GamePad.GetState(0).ThumbSticks.Left.X;
-				vel.X = MyMath.lerpClamp(vel.X, 140f * k, 350 * u.dt);
-				walkAnimEvalTime += (float)(u.dt);
-				_isFacingRight = k > 0f;
-			}
-
-			bool isJumpBtnPressed = (Keyboard.GetState().IsKeyDown(Keys.Space) && !u.game.oldks.IsKeyDown(Keys.Space)) || (u.game.oldgs.IsButtonUp(Buttons.A) && GamePad.GetState(0).IsButtonDown(Buttons.A));
-			bool isJumpBtnReleased = !Keyboard.GetState().IsKeyDown(Keys.Space) && u.game.oldks.IsKeyDown(Keys.Space) || (u.game.oldgs.IsButtonDown(Buttons.A) && GamePad.GetState(0).IsButtonUp(Buttons.A));
-
-			if ((timeSpentInAir < 0.15f || jumpCounter == 1) && isJumpBtnPressed) {
-				// pressed
-				vel.Y = -maxJumpVelocity;
-				jumpCounter++;
-				foreach (JumpSwitch tile in u.level.jumpSwitches) {
-					tile._isSolid = !tile._isSolid;
+				if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Left) || GamePad.GetState(0).IsButtonDown(Buttons.DPadLeft)) {
+					vel.X = MyMath.lerpClamp(vel.X, -140f, 350 * u.dt);
+					walkAnimEvalTime += (float)(u.dt);
+					_isFacingRight = false;
 				}
-				u.game.jumpSfx.Play();
-			}
+				if (!isCrouched && Keyboard.GetState().IsKeyDown(Keys.Right) || GamePad.GetState(0).IsButtonDown(Buttons.DPadRight)) {
+					vel.X = MyMath.lerpClamp(vel.X, 140f, 350 * u.dt);
+					walkAnimEvalTime += (float)(u.dt);
+					_isFacingRight = true;
+				}
 
-			if (isJumpBtnReleased) {
-				// released
-				if (vel.Y < -minJumpVelocity) {
-					vel.Y = -minJumpVelocity;
+				if (!isCrouched && MathF.Abs(GamePad.GetState(0).ThumbSticks.Left.X) > 0.01f) {
+					float k = GamePad.GetState(0).ThumbSticks.Left.X;
+					vel.X = MyMath.lerpClamp(vel.X, 140f * k, 350 * u.dt);
+					walkAnimEvalTime += (float)(u.dt);
+					_isFacingRight = k > 0f;
+				}
+
+				bool isJumpBtnPressed = (Keyboard.GetState().IsKeyDown(Keys.Space) && !u.game.oldks.IsKeyDown(Keys.Space)) || (u.game.oldgs.IsButtonUp(Buttons.A) && GamePad.GetState(0).IsButtonDown(Buttons.A));
+				bool isJumpBtnReleased = !Keyboard.GetState().IsKeyDown(Keys.Space) && u.game.oldks.IsKeyDown(Keys.Space) || (u.game.oldgs.IsButtonDown(Buttons.A) && GamePad.GetState(0).IsButtonUp(Buttons.A));
+
+				if ((timeSpentInAir < 0.15f || jumpCounter == 1) && isJumpBtnPressed) {
+					// pressed
+					vel.Y = -maxJumpVelocity;
+					jumpCounter++;
+					foreach (JumpSwitch tile in u.level.jumpSwitches) {
+						tile._isSolid = !tile._isSolid;
+					}
+					u.game.jumpSfx.Play();
+				}
+
+				if (isJumpBtnReleased) {
+					// released
+					if (vel.Y < -minJumpVelocity) {
+						vel.Y = -minJumpVelocity;
+					}
 				}
 			}
 
+			// Physics movement with no collisions (they are handled below).
 			pos += vel * u.dt;
 
 			if (vel.Y < 0)
@@ -111,111 +166,35 @@ namespace Game1
 			else
 				vel.Y += fallingGravity * u.dt;
 
-
 			vel.X -= vel.X * (isCrouched ? 0.1f : 0.05f);
 
+			// Collision check and response.
 			bool isGrounded = false;
-			Rectf snowmanRectGroundCheck = new Rectf(pos.X + 8, pos.Y + 16f, 16f, 18f);
 
-			foreach (Tile tile in u.level.tiles) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
-				//isGrounded |= snowmanRectGroundCheck.GetIntersectionDepth(tile.GetRectWs()).Y < 0f;
-				if (depth.X != 0f && MathF.Abs(depth.X) < MathF.Abs(depth.Y)) {
-					pos.X += depth.X;
-					//vel.X = 0;
-				}
-				if (depth.Y != 0f && MathF.Abs(depth.Y) < MathF.Abs(depth.X)) {
-					pos.Y += depth.Y;
-					isGrounded = depth.Y < 0f;
-					if (vel.Y > 0f && depth.Y < 0f)
-						vel.Y = 0;
-				}
+			// Non-harmful walkable tiles.
+			CollisionTiles(u.level.tiles, ref isGrounded);
+			CollisionTiles(u.level.jumpSwitches, ref isGrounded);
+			CollisionTiles(u.level.timeSwitches, ref isGrounded);
+
+			if (isGrounded) {
+				jumpCounter = 0;
+				timeSpentInAir = 0f;
+			}
+			else {
+				timeSpentInAir += u.dt;
 			}
 
-			foreach (JumpSwitch tile in u.level.jumpSwitches) {
+			// Enemies collision and death.
+			CollisionTestEnemies(u.level.walkers, u.level);
+			CollisionTestEnemies(u.level.fires, u.level);
+			CollisionTestEnemies(u.level.fireProjectiles, u.level);
+			CollisionTestEnemies(u.level.ghosties, u.level);
+			CollisionTestEnemies(u.level.iceSpikes, u.level);
 
-				if (tile._isSolid == false) continue;
-
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
-				isGrounded |= snowmanRectGroundCheck.GetIntersectionDepth(tile.GetRectWs()).Y < 0f;
-				if (depth.X != 0f && MathF.Abs(depth.X) < MathF.Abs(depth.Y)) {
-					pos.X += depth.X;
-					//vel.X = 0;
-				}
-				if (depth.Y != 0f && MathF.Abs(depth.Y) < MathF.Abs(depth.X)) {
-					pos.Y += depth.Y;
-					if (vel.Y > 0f)
-						vel.Y = 0;
-				}
-			}
-
-			foreach (TimeSwitch tile in u.level.timeSwitches) {
-				if (tile._isSolid == false) continue;
-
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(tile.GetRectWs());
-				isGrounded |= snowmanRectGroundCheck.GetIntersectionDepth(tile.GetRectWs()).Y < 0f;
-				if (depth.X != 0f && MathF.Abs(depth.X) < MathF.Abs(depth.Y)) {
-					pos.X += depth.X;
-					vel.X = 0;
-				}
-				if (depth.Y != 0f && MathF.Abs(depth.Y) < MathF.Abs(depth.X)) {
-					pos.Y += depth.Y;
-					if (vel.Y > 0f)
-						vel.Y = 0;
-				}
-			}
-
-			foreach (var f in u.level.walkers) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
-				if (depth != Vector2.Zero) {
-					isDead = true;
-					//u.level.shouldRestart = true;
-				}
-			}
-
-			foreach (var f in u.level.fires) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
-				if (depth != Vector2.Zero) {
-					isDead = true;
-					//u.level.shouldRestart = true;
-				}
-			}
-
-			foreach (FireProjectile fp in u.level.fireProjectiles) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(fp.GetRectWs());
-				if (depth != Vector2.Zero) {
-					isDead = true;
-					//u.level.shouldRestart = true;
-				}
-			}
-
-			foreach (Ghosty f in u.level.ghosties) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
-				if (depth != Vector2.Zero) {
-					isDead = true;
-					//u.level.shouldRestart = true;
-				}
-			}
-
-			foreach (IceSpike f in u.level.iceSpikes) {
-				Rectf snowmanRect = GetRectWs();
-				Vector2 depth = snowmanRect.GetIntersectionDepth(f.GetRectWs());
-				if (depth != Vector2.Zero) {
-					isDead = true;
-					//u.level.shouldRestart = true;
-				}
-			}
-
+			// Letters collecting
 			foreach (Letter letter in u.level.letters) {
-				Rectf snowmanRect = GetRectWs();
 				if (letter.isCollected == false) {
+					Rectf snowmanRect = GetRectWs();
 					Vector2 depth = snowmanRect.GetIntersectionDepth(letter.GetRectWs());
 					if (depth != Vector2.Zero) {
 						letter.isCollected = true;
@@ -224,7 +203,7 @@ namespace Game1
 				}
 			}
 
-			// Mailbox level end
+			// Mailbox level ending.
 			{
 				Rectf snowmanRect = GetRectWs();
 				Vector2 depth = snowmanRect.GetIntersectionDepth(u.level.letterBox.GetRectWs());
@@ -234,26 +213,27 @@ namespace Game1
 					foreach (Letter l in u.level.letters) {
 						areAllLeteterCollected &= l.isCollected;
 					}
-					if (areAllLeteterCollected) {
+					if (areAllLeteterCollected && u.level.isComplete == false) {
 						u.level.isComplete = true;
+						u.game.levelWinSfx.Play();
 					}
 				}
 			}
 
-			if (pos.Y >= u.level.deathYCoord) {
+			// Kill the player if he falls. Don't kill him if the level is completed.
+			if (pos.Y >= u.level.deathYCoord && !u.level.isComplete) {
 				isDead = true;
-				//u.level.shouldRestart = true;
 			}
 
+			// Acumulated values to check for events.
+			if (isDead && !wasDead) {
+				u.game.hitSfx.Play();
+			}
+
+			wasDead = isDead;
 			wasGrounded = isGrounded;
-			if (isGrounded) {
-				jumpCounter = 0;
-				timeSpentInAir = 0f;
-			}
-			else {
-				timeSpentInAir += u.dt;
-			}
 
+			// Move the camera.
 			Camera cam = u.level.camera;
 
 			if (cam.pos.X - pos.X < -16f) {
@@ -271,13 +251,6 @@ namespace Game1
 			if (cam.pos.Y - pos.Y > 100f) {
 				cam.pos.Y = pos.Y + 100f;
 			}
-
-			if(isDead && !wasDead) {
-				u.game.hitSfx.Play();
-			}
-
-			wasDead = isDead;
-			//cam.pos.Y = pos.Y;
 		}
 	}
 
