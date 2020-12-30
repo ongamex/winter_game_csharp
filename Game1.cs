@@ -12,10 +12,25 @@ namespace Game1
 {
 	public class Game1 : Game
 	{
+		public enum GameState
+		{
+			WelcomeScreen,
+			Playing,
+			EndScreen,
+		}
+
+
+		Camera welcomScreenCamera = new Camera();
+		Camera endScreenCamera = new Camera();
+
 		private GraphicsDeviceManager _graphics;
 		private SpriteBatch _spriteBatch;
 
 		private Texture2D whiteTex1;
+
+		private Texture2D welcomeTex;
+		private Texture2D gameCompleteTex;
+
 		private Texture2D snowmanDeadTex;
 		private Texture2D snowmandCrouchTex;
 		private Texture2D snowmandWinTex;
@@ -47,7 +62,8 @@ namespace Game1
 		public SoundEffect pickupSfx;
 		public SoundEffect levelWinSfx;
 
-
+		GameState gamestate;
+		float timeSpentInEndScreen = 0;
 		int currentLevel = 0;
 		List<string> allLevelFilenames = new List<string>();
 
@@ -65,6 +81,9 @@ namespace Game1
 			IsMouseVisible = true;
 
 			Window.AllowUserResizing = true;
+
+			welcomScreenCamera.viewHeigthWs = 560f;
+			endScreenCamera.viewHeigthWs = 220f;
 		}
 
 		protected override void Initialize() {
@@ -102,7 +121,8 @@ namespace Game1
 			pickupSfx = Content.Load<SoundEffect>("snd/pickup");
 			levelWinSfx = Content.Load<SoundEffect>("snd/levelWin");
 
-			//song.Play(volume: 0.7f, pitch: 0.0f, pan: 0.0f);
+			welcomeTex = Content.Load<Texture2D>("welcomeImage");
+			gameCompleteTex = Content.Load<Texture2D>("gameComplete");
 
 			snowmanDeadTex = Content.Load<Texture2D>("snowman_dead");
 			snowmandCrouchTex = Content.Load<Texture2D>("snowman_crouch");
@@ -127,50 +147,97 @@ namespace Game1
 			timeswitchRedAnim = SpriteAnimation.Load("Content/timeSwitchRedAnim.json", Content);
 			fileAnim = SpriteAnimation.Load("Content/fire.json", Content);
 			walkerAnim = SpriteAnimation.Load("Content/walkAndBad.json", Content);
-
 		}
 
+		// Logic update.
 		protected override void Update(GameTime gameTime) {
 			float dt = (float)(gameTime.ElapsedGameTime.TotalSeconds);
 
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-				Exit();
 
-			snow.update(dt);
-
-			if (level == null) {
-
-				if (currentLevel >= allLevelFilenames.Count) {
-					currentLevel = 0;
-				}
-
-				level = Level.FromFile(allLevelFilenames[currentLevel]);
-			}
-			if (level != null) {
-				level.Update(this, dt);
-				if (level.shouldRestart) {
-					level = Level.FromText(level.creationText);
-				}
-
-				if (level.isComplete && level.timeSpentComplete > 2f) {
-					level = null;
-					currentLevel++;
+			if (gamestate == GameState.WelcomeScreen) {
+				if (Keyboard.GetState().GetPressedKeyCount() != 0 || GamePad.GetState(0).IsButtonDown(Buttons.A)) {
+					gamestate = GameState.Playing;
 				}
 			}
-			// TODO: Add your update logic here
+			else if (gamestate == GameState.EndScreen) {
+				timeSpentInEndScreen += dt;
+
+				if (timeSpentInEndScreen > 3f) {
+					timeSpentInEndScreen = 0f;
+					gamestate = GameState.WelcomeScreen;
+				}
+			}
+			else if (gamestate == GameState.Playing) {
+				snow.update(dt);
+
+				if (level == null) {
+
+					if (currentLevel >= allLevelFilenames.Count) {
+						currentLevel = 0;
+						gamestate = GameState.EndScreen;
+					}
+					level = Level.FromFile(allLevelFilenames[currentLevel]);
+				}
+
+				if (level != null && gamestate == GameState.Playing) {
+					level.Update(this, dt);
+					if (level.shouldRestart) {
+						level = Level.FromText(level.creationText);
+					}
+
+					if (level.isComplete && level.timeSpentComplete > 2f) {
+						level = null;
+						currentLevel++;
+					}
+				}
+			}
+
+
+			// Cache the input state in order to find presses and releases.
 			oldks = Keyboard.GetState();
 			oldgs = GamePad.GetState(0);
 			base.Update(gameTime);
 		}
 
+		// Generic Draw.
 		protected override void Draw(GameTime gameTime) {
 
+			GraphicsDevice.Clear(new Color(38f / 255f, 43f / 255f, 68f / 255f));
+
+			if (gamestate == GameState.WelcomeScreen) {
+
+				Matrix proj = welcomScreenCamera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+				Matrix n2w = Matrix.CreateTranslation(-welcomeTex.Width * 0.5f, -welcomeTex.Height * 0.5f, 0f);
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+				_spriteBatch.Draw(welcomeTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.End();
+
+			}
+			else if (gamestate == GameState.EndScreen) {
+
+				Matrix proj = endScreenCamera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+				Matrix n2w = Matrix.CreateTranslation(-gameCompleteTex.Width * 0.5f, -gameCompleteTex.Height * 0.5f, 0f);
+				_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp, null, RasterizerState.CullNone, null, n2w * proj);
+				_spriteBatch.Draw(gameCompleteTex, new Vector2(0, 0), Color.White);
+				_spriteBatch.End();
+
+			}
+			else if (gamestate == GameState.Playing) {
+				DrawLevel(gameTime);
+			}
+
+			base.Draw(gameTime);
+		}
+
+		// Draw the Level.
+		protected void DrawLevel(GameTime gameTime) {
+
 			if (level == null) {
-				base.Draw(gameTime);
 				return;
 			}
 
-			GraphicsDevice.Clear(new Color(38f / 255f, 43f / 255f, 68f / 255f));
 			Matrix proj = level.camera.GetProjectionMatrix(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
 			float totalSeconds = (float)gameTime.TotalGameTime.TotalSeconds;
@@ -202,8 +269,6 @@ namespace Game1
 				float parallaxShiftXWs = level.camera.pos.X * 0.3f;
 				float parallaxShiftYWs = level.camera.pos.Y * 0.05f - 8f;
 				parallaxShiftXWs -= MathF.Floor(parallaxShiftXWs / imageWidthWs) * imageWidthWs;
-
-
 
 				int k = (int)(level.camera.viewRectWs.X / imageWidthWs) - 2;
 				int numRepeatsNeededToCovertTheScreen = (int)(level.camera.viewRectWs.Width / imageWidthWs) + 4;
@@ -423,8 +488,6 @@ namespace Game1
 					_spriteBatch.End();
 				}
 			}
-
-			base.Draw(gameTime);
 		}
 	}
 }
