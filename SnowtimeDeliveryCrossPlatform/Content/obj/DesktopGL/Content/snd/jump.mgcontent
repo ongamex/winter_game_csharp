@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>E:/SnowtimeDeliveryCrossPlatform/Content/snd/jump.wav</SourceFile>
+  <SourceTime>2020-12-29T18:24:57.5246487+02:00</SourceTime>
+  <DestFile>E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/jump.xnb</DestFile>
+  <DestTime>2020-12-30T22:09:29.5680541+02:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2020-08-10T16:17:54+03:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2020-08-10T16:17:54+03:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

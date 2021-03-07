@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>E:/winter_game_csharp/Content/snowman.png</File>
+    <File>E:/winter_game_csharp/Content/tile.png</File>
+    <File>E:/winter_game_csharp/Content/snowman_walk.png</File>
+    <File>E:/winter_game_csharp/Content/yellowJumpSwitchPassable.png</File>
+    <File>E:/winter_game_csharp/Content/greenJumpSwitchPassable.png</File>
+    <File>E:/winter_game_csharp/Content/greenJumpSwitchSolid.png</File>
+    <File>E:/winter_game_csharp/Content/yellowJumpSwitchSolid.png</File>
+    <File>E:/winter_game_csharp/Content/fire.png</File>
+    <File>E:/winter_game_csharp/Content/fireProjectile.png</File>
+    <File>E:/winter_game_csharp/Content/snowman_dead.png</File>
+    <File>E:/winter_game_csharp/Content/walkAndBad.png</File>
+    <File>E:/winter_game_csharp/Content/ghosty.png</File>
+    <File>E:/winter_game_csharp/Content/timeSwitchRedAnim.png</File>
+    <File>E:/winter_game_csharp/Content/timeSwitchBlueAnim.png</File>
+    <File>E:/winter_game_csharp/Content/iceSpike.png</File>
+    <File>E:/winter_game_csharp/Content/city.png</File>
+    <File>E:/winter_game_csharp/Content/snowflake0.png</File>
+    <File>E:/winter_game_csharp/Content/snowman_crouch.png</File>
+    <File>E:/winter_game_csharp/Content/snd/jump.wav</File>
+    <File>E:/winter_game_csharp/Content/snd/hit.wav</File>
+    <File>E:/winter_game_csharp/Content/snd/Slow Stride Loop.mp3</File>
+    <File>E:/winter_game_csharp/Content/letterBox.png</File>
+    <File>E:/winter_game_csharp/Content/letter.png</File>
+    <File>E:/winter_game_csharp/Content/snd/pickup.wav</File>
+    <File>E:/winter_game_csharp/Content/mount.png</File>
+    <File>E:/winter_game_csharp/Content/letterBoxPrompt.png</File>
+    <File>E:/winter_game_csharp/Content/letterboxPromptReady.png</File>
+    <File>E:/winter_game_csharp/Content/snd/levelWin.wav</File>
+    <File>E:/winter_game_csharp/Content/snowman_win.png</File>
+    <File>E:/winter_game_csharp/Content/welcomeImage.png</File>
+    <File>E:/winter_game_csharp/Content/gameComplete.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

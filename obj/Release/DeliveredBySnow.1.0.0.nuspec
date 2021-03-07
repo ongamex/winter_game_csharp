@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>DeliveredBySnow</id>
+    <version>1.0.0</version>
+    <authors>DeliveredBySnow</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="MonoGame.Content.Builder.Task" version="3.8.0.1641" exclude="Build,Analyzers" />
+        <dependency id="MonoGame.Framework.WindowsDX" version="3.8.0.1641" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework=".NETCoreApp3.1">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WindowsForms" />
+      </group>
+    </frameworkReferences>
+    <contentFiles>
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/city.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/fire.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/fireProjectile.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/ghosty.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/greenJumpSwitchPassable.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/greenJumpSwitchSolid.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/iceSpike.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/letter.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/letterBox.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/letterBoxPrompt.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/letterboxPromptReady.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/mount.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/hit.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/Juhani Junkala [Retro Game Music Pack] Level 1.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/jump.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/pickup.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/Slow Stride Loop.wma" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snd/Slow Stride Loop.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snowflake0.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snowman.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snowman_crouch.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snowman_dead.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/snowman_walk.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/tile.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/timeSwitchBlueAnim.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/timeSwitchRedAnim.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/walkAndBad.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/yellowJumpSwitchPassable.xnb" buildAction="Content" />
+      <files include="any/netcoreapp3.1/Content/bin/Windows/Content/yellowJumpSwitchSolid.xnb" buildAction="Content" />
+    </contentFiles>
+  </metadata>
+  <files>
+    <file src="E:\winter_game_csharp\bin\Release\netcoreapp3.1\DeliveredBySnow.runtimeconfig.json" target="lib\netcoreapp3.1\DeliveredBySnow.runtimeconfig.json" />
+    <file src="E:\winter_game_csharp\bin\Release\netcoreapp3.1\DeliveredBySnow.dll" target="lib\netcoreapp3.1\DeliveredBySnow.dll" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\city.xnb" target="content\Content\bin\Windows\Content\city.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\city.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\city.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\fire.xnb" target="content\Content\bin\Windows\Content\fire.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\fire.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\fire.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\fireProjectile.xnb" target="content\Content\bin\Windows\Content\fireProjectile.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\fireProjectile.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\fireProjectile.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\ghosty.xnb" target="content\Content\bin\Windows\Content\ghosty.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\ghosty.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\ghosty.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\greenJumpSwitchPassable.xnb" target="content\Content\bin\Windows\Content\greenJumpSwitchPassable.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\greenJumpSwitchPassable.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\greenJumpSwitchPassable.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\greenJumpSwitchSolid.xnb" target="content\Content\bin\Windows\Content\greenJumpSwitchSolid.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\greenJumpSwitchSolid.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\greenJumpSwitchSolid.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\iceSpike.xnb" target="content\Content\bin\Windows\Content\iceSpike.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\iceSpike.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\iceSpike.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letter.xnb" target="content\Content\bin\Windows\Content\letter.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letter.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\letter.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterBox.xnb" target="content\Content\bin\Windows\Content\letterBox.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterBox.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\letterBox.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterBoxPrompt.xnb" target="content\Content\bin\Windows\Content\letterBoxPrompt.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterBoxPrompt.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\letterBoxPrompt.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterboxPromptReady.xnb" target="content\Content\bin\Windows\Content\letterboxPromptReady.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\letterboxPromptReady.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\letterboxPromptReady.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\mount.xnb" target="content\Content\bin\Windows\Content\mount.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\mount.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\mount.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\hit.xnb" target="content\Content\bin\Windows\Content\snd\hit.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\hit.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\hit.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Juhani Junkala [Retro Game Music Pack] Level 1.xnb" target="content\Content\bin\Windows\Content\snd\Juhani Junkala [Retro Game Music Pack] Level 1.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Juhani Junkala [Retro Game Music Pack] Level 1.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\Juhani Junkala [Retro Game Music Pack] Level 1.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\jump.xnb" target="content\Content\bin\Windows\Content\snd\jump.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\jump.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\jump.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\pickup.xnb" target="content\Content\bin\Windows\Content\snd\pickup.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\pickup.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\pickup.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Slow Stride Loop.wma" target="content\Content\bin\Windows\Content\snd\Slow Stride Loop.wma" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Slow Stride Loop.wma" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\Slow Stride Loop.wma" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Slow Stride Loop.xnb" target="content\Content\bin\Windows\Content\snd\Slow Stride Loop.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snd\Slow Stride Loop.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snd\Slow Stride Loop.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowflake0.xnb" target="content\Content\bin\Windows\Content\snowflake0.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowflake0.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snowflake0.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman.xnb" target="content\Content\bin\Windows\Content\snowman.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snowman.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_crouch.xnb" target="content\Content\bin\Windows\Content\snowman_crouch.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_crouch.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snowman_crouch.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_dead.xnb" target="content\Content\bin\Windows\Content\snowman_dead.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_dead.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snowman_dead.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_walk.xnb" target="content\Content\bin\Windows\Content\snowman_walk.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\snowman_walk.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\snowman_walk.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\tile.xnb" target="content\Content\bin\Windows\Content\tile.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\tile.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\tile.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\timeSwitchBlueAnim.xnb" target="content\Content\bin\Windows\Content\timeSwitchBlueAnim.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\timeSwitchBlueAnim.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\timeSwitchBlueAnim.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\timeSwitchRedAnim.xnb" target="content\Content\bin\Windows\Content\timeSwitchRedAnim.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\timeSwitchRedAnim.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\timeSwitchRedAnim.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\walkAndBad.xnb" target="content\Content\bin\Windows\Content\walkAndBad.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\walkAndBad.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\walkAndBad.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\yellowJumpSwitchPassable.xnb" target="content\Content\bin\Windows\Content\yellowJumpSwitchPassable.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\yellowJumpSwitchPassable.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\yellowJumpSwitchPassable.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\yellowJumpSwitchSolid.xnb" target="content\Content\bin\Windows\Content\yellowJumpSwitchSolid.xnb" />
+    <file src="E:\winter_game_csharp\Content\bin\Windows\Content\yellowJumpSwitchSolid.xnb" target="contentFiles\any\netcoreapp3.1\Content\bin\Windows\Content\yellowJumpSwitchSolid.xnb" />
+  </files>
+</package>

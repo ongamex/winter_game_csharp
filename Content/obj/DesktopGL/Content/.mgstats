@@ -1,0 +1,26 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"E:/winter_game_csharp/Content/fire.json","E:\winter_game_csharp\Content\bin\DesktopGL\Content\fire.json","CopyItem","File",1294,1294,0.002089
+"E:/winter_game_csharp/Content/gameComplete.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/gameComplete.xnb","TextureProcessor","Texture2DContent",2109,100437,0.1654779
+"E:/winter_game_csharp/Content/letter.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/letter.xnb","TextureProcessor","Texture2DContent",516,4181,0.001596
+"E:/winter_game_csharp/Content/letterBox.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/letterBox.xnb","TextureProcessor","Texture2DContent",728,4181,0.0317885
+"E:/winter_game_csharp/Content/letterBoxPrompt.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/letterBoxPrompt.xnb","TextureProcessor","Texture2DContent",616,4181,0.0016281
+"E:/winter_game_csharp/Content/letterboxPromptReady.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/letterboxPromptReady.xnb","TextureProcessor","Texture2DContent",417,4181,0.1539338
+"E:/winter_game_csharp/Content/levels/level_0.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_0.txt","CopyItem","File",307,307,0.001923
+"E:/winter_game_csharp/Content/levels/level_1.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_1.txt","CopyItem","File",261,261,0.0022721
+"E:/winter_game_csharp/Content/levels/level_2.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_2.txt","CopyItem","File",198,198,0.0020973
+"E:/winter_game_csharp/Content/levels/level_3.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_3.txt","CopyItem","File",468,468,0.0005642
+"E:/winter_game_csharp/Content/levels/level_4.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_4.txt","CopyItem","File",563,563,0.0004003
+"E:/winter_game_csharp/Content/levels/level_5.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_5.txt","CopyItem","File",480,480,0.0019477
+"E:/winter_game_csharp/Content/levels/level_6.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_6.txt","CopyItem","File",627,627,0.0022012
+"E:/winter_game_csharp/Content/levels/level_7.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_7.txt","CopyItem","File",613,613,0.001909
+"E:/winter_game_csharp/Content/levels/level_8.txt","E:\winter_game_csharp\Content\bin\DesktopGL\Content\levels/level_8.txt","CopyItem","File",1124,1124,0.0020632
+"E:/winter_game_csharp/Content/mount.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/mount.xnb","TextureProcessor","Texture2DContent",507,32853,0.2192856
+"E:/winter_game_csharp/Content/snd/levelWin.wav","E:/winter_game_csharp/Content/bin/DesktopGL/Content/snd/levelWin.xnb","SoundEffectProcessor","SoundEffectContent",56946,57007,0.3569357
+"E:/winter_game_csharp/Content/snd/pickup.wav","E:/winter_game_csharp/Content/bin/DesktopGL/Content/snd/pickup.xnb","SoundEffectProcessor","SoundEffectContent",52466,52527,0.1767632
+"E:/winter_game_csharp/Content/snd/Slow Stride Loop.mp3","E:/winter_game_csharp/Content/bin/DesktopGL/Content/snd/Slow Stride Loop.xnb","SongProcessor","SongContent",2097154,134,2.8063395
+"E:/winter_game_csharp/Content/snowman_walk.json","E:\winter_game_csharp\Content\bin\DesktopGL\Content\snowman_walk.json","CopyItem","File",1616,1616,0.0005194
+"E:/winter_game_csharp/Content/snowman_win.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/snowman_win.xnb","TextureProcessor","Texture2DContent",723,4181,0.1901657
+"E:/winter_game_csharp/Content/timeSwitchBlueAnim.json","E:\winter_game_csharp\Content\bin\DesktopGL\Content\timeSwitchBlueAnim.json","CopyItem","File",1364,1364,0.0005396
+"E:/winter_game_csharp/Content/timeSwitchRedAnim.json","E:\winter_game_csharp\Content\bin\DesktopGL\Content\timeSwitchRedAnim.json","CopyItem","File",1359,1359,0.0004854
+"E:/winter_game_csharp/Content/walkAndBad.json","E:\winter_game_csharp\Content\bin\DesktopGL\Content\walkAndBad.json","CopyItem","File",1324,1324,0.0004596
+"E:/winter_game_csharp/Content/welcomeImage.png","E:/winter_game_csharp/Content/bin/DesktopGL/Content/welcomeImage.xnb","TextureProcessor","Texture2DContent",19922,1048661,0.220891

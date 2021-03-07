@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowman.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/tile.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowman_walk.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/yellowJumpSwitchPassable.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/greenJumpSwitchPassable.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/greenJumpSwitchSolid.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/yellowJumpSwitchSolid.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/fire.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/fireProjectile.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowman_dead.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/walkAndBad.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/ghosty.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/timeSwitchRedAnim.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/timeSwitchBlueAnim.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/iceSpike.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/city.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowflake0.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowman_crouch.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snd/jump.wav</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snd/hit.wav</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snd/Slow Stride Loop.mp3</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/letterBox.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/letter.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snd/pickup.wav</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/mount.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/letterBoxPrompt.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/letterboxPromptReady.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snd/levelWin.wav</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/snowman_win.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/welcomeImage.png</File>
+    <File>E:/SnowtimeDeliveryCrossPlatform/Content/gameComplete.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>

@@ -1,0 +1,6 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"E:/winter_game_csharp/Content/city.png","E:/winter_game_csharp/Content/bin/Windows/Content/city.xnb","TextureProcessor","Texture2DContent",1264,32853,0.1613664
+"E:/winter_game_csharp/Content/letterBox.png","E:/winter_game_csharp/Content/bin/Windows/Content/letterBox.xnb","TextureProcessor","Texture2DContent",728,4181,0.1701714
+"E:/winter_game_csharp/Content/letterBoxPrompt.png","E:/winter_game_csharp/Content/bin/Windows/Content/letterBoxPrompt.xnb","TextureProcessor","Texture2DContent",616,4181,0.2174836
+"E:/winter_game_csharp/Content/letterboxPromptReady.png","E:/winter_game_csharp/Content/bin/Windows/Content/letterboxPromptReady.xnb","TextureProcessor","Texture2DContent",383,4181,0.1580557
+"E:/winter_game_csharp/Content/mount.png","E:/winter_game_csharp/Content/bin/Windows/Content/mount.xnb","TextureProcessor","Texture2DContent",526,32853,0.1761624

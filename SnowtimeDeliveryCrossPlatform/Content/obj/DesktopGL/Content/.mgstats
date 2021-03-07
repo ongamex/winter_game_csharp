@@ -1,0 +1,37 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"E:/SnowtimeDeliveryCrossPlatform/Content/city.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/city.xnb","TextureProcessor","Texture2DContent",1264,32853,0.0073989
+"E:/SnowtimeDeliveryCrossPlatform/Content/fire.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/fire.xnb","TextureProcessor","Texture2DContent",1073,16469,0.0060648
+"E:/SnowtimeDeliveryCrossPlatform/Content/fireProjectile.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/fireProjectile.xnb","TextureProcessor","Texture2DContent",235,1109,0.0052101
+"E:/SnowtimeDeliveryCrossPlatform/Content/gameComplete.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/gameComplete.xnb","TextureProcessor","Texture2DContent",2109,100437,0.0281743
+"E:/SnowtimeDeliveryCrossPlatform/Content/ghosty.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/ghosty.xnb","TextureProcessor","Texture2DContent",288,4181,0.0275272
+"E:/SnowtimeDeliveryCrossPlatform/Content/greenJumpSwitchPassable.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/greenJumpSwitchPassable.xnb","TextureProcessor","Texture2DContent",257,4181,0.0057016
+"E:/SnowtimeDeliveryCrossPlatform/Content/greenJumpSwitchSolid.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/greenJumpSwitchSolid.xnb","TextureProcessor","Texture2DContent",284,4181,0.0063075
+"E:/SnowtimeDeliveryCrossPlatform/Content/iceSpike.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/iceSpike.xnb","TextureProcessor","Texture2DContent",667,4181,0.0058878
+"E:/SnowtimeDeliveryCrossPlatform/Content/letter.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/letter.xnb","TextureProcessor","Texture2DContent",516,4181,0.0051622
+"E:/SnowtimeDeliveryCrossPlatform/Content/letterBox.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/letterBox.xnb","TextureProcessor","Texture2DContent",728,4181,0.0059123
+"E:/SnowtimeDeliveryCrossPlatform/Content/letterBoxPrompt.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/letterBoxPrompt.xnb","TextureProcessor","Texture2DContent",616,4181,0.0158883
+"E:/SnowtimeDeliveryCrossPlatform/Content/letterboxPromptReady.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/letterboxPromptReady.xnb","TextureProcessor","Texture2DContent",417,4181,0.0070995
+"E:/SnowtimeDeliveryCrossPlatform/Content/levels/level_0.txt","E:\SnowtimeDeliveryCrossPlatform\Content\bin\DesktopGL\Content\levels/level_0.txt","CopyItem","File",307,307,0.0023056
+"E:/SnowtimeDeliveryCrossPlatform/Content/levels/level_10.txt","E:\SnowtimeDeliveryCrossPlatform\Content\bin\DesktopGL\Content\levels/level_10.txt","CopyItem","File",442,442,0.002563
+"E:/SnowtimeDeliveryCrossPlatform/Content/levels/level_11.txt","E:\SnowtimeDeliveryCrossPlatform\Content\bin\DesktopGL\Content\levels/level_11.txt","CopyItem","File",893,893,0.0027662
+"E:/SnowtimeDeliveryCrossPlatform/Content/levels/level_12.txt","E:\SnowtimeDeliveryCrossPlatform\Content\bin\DesktopGL\Content\levels/level_12.txt","CopyItem","File",302,302,0.0026701
+"E:/SnowtimeDeliveryCrossPlatform/Content/levels/level_9.txt","E:\SnowtimeDeliveryCrossPlatform\Content\bin\DesktopGL\Content\levels/level_9.txt","CopyItem","File",338,338,0.0027498
+"E:/SnowtimeDeliveryCrossPlatform/Content/mount.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/mount.xnb","TextureProcessor","Texture2DContent",507,32853,0.005935
+"E:/SnowtimeDeliveryCrossPlatform/Content/snd/hit.wav","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/hit.xnb","SoundEffectProcessor","SoundEffectContent",23496,23557,0.1415101
+"E:/SnowtimeDeliveryCrossPlatform/Content/snd/jump.wav","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/jump.xnb","SoundEffectProcessor","SoundEffectContent",11684,11745,1.1757085
+"E:/SnowtimeDeliveryCrossPlatform/Content/snd/levelWin.wav","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/levelWin.xnb","SoundEffectProcessor","SoundEffectContent",56946,57007,0.1743929
+"E:/SnowtimeDeliveryCrossPlatform/Content/snd/pickup.wav","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/pickup.xnb","SoundEffectProcessor","SoundEffectContent",52466,52527,0.1391342
+"E:/SnowtimeDeliveryCrossPlatform/Content/snd/Slow Stride Loop.mp3","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snd/Slow Stride Loop.xnb","SongProcessor","SongContent",2097154,134,2.7377574
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowflake0.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowflake0.xnb","TextureProcessor","Texture2DContent",354,4181,0.0054199
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowman.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowman.xnb","TextureProcessor","Texture2DContent",663,4181,0.2142998
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowman_crouch.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowman_crouch.xnb","TextureProcessor","Texture2DContent",557,4181,0.0059028
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowman_dead.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowman_dead.xnb","TextureProcessor","Texture2DContent",671,4181,0.0061596
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowman_walk.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowman_walk.xnb","TextureProcessor","Texture2DContent",1280,20565,0.0074348
+"E:/SnowtimeDeliveryCrossPlatform/Content/snowman_win.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/snowman_win.xnb","TextureProcessor","Texture2DContent",723,4181,0.0073833
+"E:/SnowtimeDeliveryCrossPlatform/Content/tile.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/tile.xnb","TextureProcessor","Texture2DContent",522,4181,0.006599
+"E:/SnowtimeDeliveryCrossPlatform/Content/timeSwitchBlueAnim.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/timeSwitchBlueAnim.xnb","TextureProcessor","Texture2DContent",502,16469,0.0062147
+"E:/SnowtimeDeliveryCrossPlatform/Content/timeSwitchRedAnim.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/timeSwitchRedAnim.xnb","TextureProcessor","Texture2DContent",533,16469,0.0161576
+"E:/SnowtimeDeliveryCrossPlatform/Content/walkAndBad.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/walkAndBad.xnb","TextureProcessor","Texture2DContent",823,16469,0.0063412
+"E:/SnowtimeDeliveryCrossPlatform/Content/welcomeImage.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/welcomeImage.xnb","TextureProcessor","Texture2DContent",19922,1048661,0.0453505
+"E:/SnowtimeDeliveryCrossPlatform/Content/yellowJumpSwitchPassable.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/yellowJumpSwitchPassable.xnb","TextureProcessor","Texture2DContent",262,4181,0.0062693
+"E:/SnowtimeDeliveryCrossPlatform/Content/yellowJumpSwitchSolid.png","E:/SnowtimeDeliveryCrossPlatform/Content/bin/DesktopGL/Content/yellowJumpSwitchSolid.xnb","TextureProcessor","Texture2DContent",275,4181,0.0061442

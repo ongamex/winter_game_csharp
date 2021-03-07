@@ -1,0 +1,41 @@
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\city.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\fire.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\fireProjectile.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\ghosty.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\greenJumpSwitchPassable.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\greenJumpSwitchSolid.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\iceSpike.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\letter.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\letterBox.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\letterBoxPrompt.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\letterboxPromptReady.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\mount.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\hit.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\Juhani Junkala [Retro Game Music Pack] Level 1.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\jump.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\pickup.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\Slow Stride Loop.ogg
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snd\Slow Stride Loop.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snowflake0.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snowman.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snowman_crouch.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snowman_dead.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\snowman_walk.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\tile.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\timeSwitchBlueAnim.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\timeSwitchRedAnim.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\walkAndBad.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\yellowJumpSwitchPassable.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\Content\yellowJumpSwitchSolid.xnb
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.deps.json
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.runtimeconfig.json
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.runtimeconfig.dev.json
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.dll
+E:\SnowtimeDeliveryCrossPlatform\bin\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.pdb
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.csprojAssemblyReference.cache
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.AssemblyInfoInputs.cache
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.AssemblyInfo.cs
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.csproj.CoreCompileInputs.cache
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.dll
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.pdb
+E:\SnowtimeDeliveryCrossPlatform\obj\Release\netcoreapp2.2\SnowtimeDeliveryCrossPlatform.genruntimeconfig.cache

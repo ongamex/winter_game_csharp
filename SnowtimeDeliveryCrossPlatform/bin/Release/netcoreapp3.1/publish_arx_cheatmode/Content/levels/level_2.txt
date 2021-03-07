@@ -1,0 +1,57 @@
+   f   f      f  f
+
+      xxxxxxxxx
+          x
+    xxxxxxxxxxx 
+    x   xxp lx x
+         xxx xxxx
+           
+
+
+
+   xl   W W xw  w        x
+   x xxxxxxxxxxxxxxxxxxx x
+   x                   x x                    
+   x                   x x
+   x                   x x
+   x                   x x
+   x   f  x      lx  f x x
+   xxxxxx xxxxxxx xxxx x x
+        x x       x  x x x
+        x x       x  x x x
+        x x       x  x x x
+        x x   xxxxx  x x x        
+        x x          x x x
+        x xtTx       x x x
+        x x          x x x
+        x x w        x x x
+        x xxxxxxx    x x x
+        x x          x x x
+        x x      xTt x x x
+        x x          x x x
+        x x        w x x x
+        x x   xxxxxxxx x x
+        x x          x x x 
+        x x          x x x         
+        x x     f   lx x x
+        x x xxxxxxxx x x x
+        x x x        x x x
+        x x x        x x x
+        x x x        x x x
+        x x x        x x x
+        x x x g      x x x
+        x x xxxxx xxxx x x
+        x x x x      x x x
+        x x x x      x x x
+        x x x x      x x x
+        x x x x      x x x
+        x x x x      x x x
+        x x x x     lx x x
+        x x x x xxxx x x x
+        x x x x x    x x x
+        x x x x x    x x x
+        x x x x x    x x x
+        x x x x x    x x x
+        x x x x x    x x x
+        x x x x xL   x x x
+        x x xxx xxxxxx x x
